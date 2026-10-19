@@ -35,6 +35,8 @@ Fields Zotero lacks go on their own lines at the top of **Extra** (`Key: value`)
 |---|---|---|
 | Exhibition catalogue | Book | Extra: `Genre: cat. exp.` and/or `Event Date: 2002-05-04/2002-09-01` (either makes it a catalogue); add `Event Place: Karlsruhe, ZKM` for the venue, printed only with an Event Date |
 | Original edition date `[1989]` | Book | Extra: `Original Date: 1989` (range: `1863/1872`) |
+| Publication over several years `1886–1892` | any | Extra: `Issued: 1886/1892` (the Date field keeps only the first year) |
+| Essay in an exhibition catalogue | Book Section | Same Extra lines as for the catalogue (`Genre: cat. exp.`, `Event Date:`…) |
 | Forthcoming (`à paraître`) | any | Extra: `Status: forthcoming` (date optional → `à paraître en 2014`) |
 | Thesis / mémoire | Thesis | Type: `thèse de doctorat inédite` / `mémoire de master inédit`; University |
 | Conference proceedings | Conference Paper | Extra: `Event Place: Paris/Rome`, `Event Date: 2000` → `actes du colloque, Paris/Rome, 2000` |
@@ -85,9 +87,11 @@ distribution builds of Node are compiled without TypeScript support, hence `tsx`
 - `Id.` compares the *rendered* names, and *et al.* is not a name. So a team of three or more
   (`JOUBERT Fabienne *et al.*`) collapses into `Id.` after a work by JOUBERT Fabienne alone, or
   after another team with the same first author. Check those entries by hand.
-- Up to Zotero schema v39 (Zotero 7.0), Zotero exports the publication Place as the event place
-  too. The style therefore never uses Event Place alone to detect a catalogue or a conference,
-  and prints it only together with an Event Date.
+- Zotero versions whose data schema predates January 2026 also export the publication Place as
+  the event place (`zotero-schema` commit 7c592c8 separated them). The style therefore never uses
+  Event Place alone to detect a catalogue or a conference, and prints it only together with an
+  Event Date. On those older versions, **always add `Event Place:` when you add `Event Date:`**,
+  otherwise the publication place is printed as the exhibition venue.
 - An encyclopedia entry is formatted as online (`[en ligne]`, URL) when it has a URL and **no
   volume or page**; a printed lexicon with a URL keeps the print layout.
 - Two different authors with the same surname and year get their first name in short notes

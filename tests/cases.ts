@@ -1,7 +1,9 @@
 // Test cases taken from the Guide du proséminaire (GPS), février 2025, p. 12-18.
 // Items are CSL-JSON, i.e. what Zotero hands to the style. Fields that Zotero has no
 // dedicated field for (genre on books, event-place, event-date, status, call-number...)
-// are entered in Zotero's Extra field, e.g. "Event Place: Karlsruhe, ZKM".
+// are entered in Zotero's Extra field, e.g. "Event Place: Karlsruhe, ZKM". Zotero passes Extra to
+// the processor as the `note` variable; multi-year dates are only possible that way
+// (Extra "Issued: 1879/1883"), so those cases use `note`.
 // Where the expected output deviates from the guide's printed example, a comment says why.
 
 export type Name = { family?: string; given?: string; literal?: string };
@@ -30,7 +32,7 @@ export const cases: { name: string; item: Item; bib: string }[] = [
     item: {
       id: "chronique", type: "book",
       title: "Chronique du Mont-Saint-Michel (1343–1468) publiée avec notes et pièces diverses relatives au Mont Saint-Michel et à la défense nationale en Basse Normandie pendant l’occupation anglaise par Siméon Luce",
-      "publisher-place": "Paris", publisher: "F. Didot", issued: range([1879], [1883]), "number-of-volumes": "2",
+      "publisher-place": "Paris", publisher: "F. Didot", note: "issued: 1879/1883", "number-of-volumes": "2",
     },
     bib: "*Chronique du Mont-Saint-Michel (1343–1468) publiée avec notes et pièces diverses relatives au Mont Saint-Michel et à la défense nationale en Basse Normandie pendant l’occupation anglaise par Siméon Luce*, Paris, F. Didot, 1879–1883, 2 vol.",
   },
@@ -39,7 +41,7 @@ export const cases: { name: string; item: Item; bib: string }[] = [
     item: {
       id: "duchesne", type: "book", editor: [n("Duchesne", "Louis")],
       title: "Le Liber Pontificalis", "publisher-place": "Paris", publisher: "E. Thorin",
-      issued: range([1886], [1892]), "number-of-volumes": "2",
+      note: "issued: 1886/1892", "number-of-volumes": "2",
     },
     bib: "DUCHESNE Louis (éd.), *Le Liber Pontificalis*, Paris, E. Thorin, 1886–1892, 2 vol.",
   },
@@ -92,7 +94,7 @@ export const cases: { name: string; item: Item; bib: string }[] = [
     item: {
       id: "romanini", type: "book", editor: [n("Romanini", "Angiola Maria")],
       title: "Enciclopedia dell’arte medievale", "publisher-place": "Rome",
-      publisher: "Istituto della Enciclopedia italiana", issued: range([1991], [2002]), "number-of-volumes": "12",
+      publisher: "Istituto della Enciclopedia italiana", note: "issued: 1991/2002", "number-of-volumes": "12",
     },
     bib: "ROMANINI Angiola Maria (éd.), *Enciclopedia dell’arte medievale*, Rome, Istituto della Enciclopedia italiana, 1991–2002, 12 vol.",
   },
@@ -450,6 +452,33 @@ export const cases: { name: string; item: Item; bib: string }[] = [
     },
     bib: "VALLOTTON Félix, *Lettre à Hedy Hahnloser*, 4 mars 1912, Winterthour, Villa Flora, Fonds Hahnloser, n° 12.",
   },
+  {
+    name: "Essai dans un catalogue d’exposition",
+    item: {
+      id: "essay-cat", type: "chapter", author: [n("Dupont", "Anne")], title: "Essai",
+      editor: [n("Latour", "Bruno")], "container-title": "Iconoclash", genre: "cat. exp.",
+      "event-place": "Karlsruhe, ZKM", "event-date": range([2002, 5, 4], [2002, 9, 1]),
+      "publisher-place": "Cambridge (Mass.)", publisher: "MIT Press", issued: y(2002), page: "3-10",
+    },
+    bib: "DUPONT Anne, « Essai », in : LATOUR Bruno (éd.), *Iconoclash*, cat. exp., Karlsruhe, ZKM, 4 mai–1er septembre 2002, Cambridge (Mass.), MIT Press, 2002, p. 3–10.",
+  },
+  {
+    name: "Chapitre traduit dans un ouvrage collectif (initiales du traducteur)",
+    item: {
+      id: "chap-trad", type: "chapter", author: [n("Wirth", "Jean")], title: "Image",
+      editor: [n("Borgeaud", "Philippe")], translator: [n("Arnal", "Bernard")], "container-title": "Objets",
+      "publisher-place": "Berne", publisher: "Peter Lang", issued: y(2005), page: "325-345",
+    },
+    bib: "WIRTH Jean, « Image », in : BORGEAUD Philippe (éd.), *Objets*, trad. B. Arnal, Berne, Peter Lang, 2005, p. 325–345.",
+  },
+  {
+    name: "Numéro de revue non numérique",
+    item: {
+      id: "issue-text", type: "article-journal", author: [n("Dupont", "Anne")], title: "Saisons",
+      "container-title": "Revue de l’art", volume: "12", issue: "Printemps", issued: y(2001), page: "1-9",
+    },
+    bib: "DUPONT Anne, « Saisons », in : *Revue de l’art*, vol. 12, Printemps, 2001, p. 1–9.",
+  },
   // ---------- Zotero 7 (schema <= v39) exports Place as both publisher-place and event-place ----------
   {
     name: "Zotero 7 : un livre avec lieu n’est pas un catalogue",
@@ -698,6 +727,17 @@ const joubert2008: Item = {
 };
 
 export const bibliographies: { name: string; items: Item[]; expected: string[] }[] = [
+  {
+    // Guards a citeproc-js quirk: one date macro reached from two branches leaked the "[ ]" of
+    // the original date into other date ranges ("4 mai–[1er septembre ]2002").
+    name: "Plages de dates mélangées (date originale, exposition, essai)",
+    items: [byId("viollet"), byId("iconoclash-full"), byId("essay-cat")],
+    expected: [
+      "DUPONT Anne, « Essai », in : LATOUR Bruno (éd.), *Iconoclash*, cat. exp., Karlsruhe, ZKM, 4 mai–1er septembre 2002, Cambridge (Mass.), MIT Press, 2002, p. 3–10.",
+      "LATOUR Bruno et WEIBEL Peter (éd.), *Iconoclash. Beyond the Image Wars in Science, Religion and Art*, cat. exp., Karlsruhe, ZKM, 4 mai–1er septembre 2002, Cambridge (Mass.), The MIT Press, 2002.",
+      "VIOLLET-LE-DUC Eugène-Emmanuel, *Entretiens sur l’architecture* [1863–1872], Gollion, Infolio, 2010.",
+    ],
+  },
   {
     name: "Site web sans auteur classé au nom du site",
     items: [byId("neraudau"), {

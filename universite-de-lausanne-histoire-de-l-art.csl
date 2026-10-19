@@ -74,13 +74,21 @@
   </macro>
   <!-- Directeur·ice·s d'un ouvrage collectif : plus de trois noms, ne mentionner que le premier -->
   <macro name="container-contributors">
-    <names variable="container-author editor" delimiter=", ">
-      <name and="text" delimiter=", " delimiter-precedes-last="never" et-al-min="4" et-al-use-first="1" name-as-sort-order="all" sort-separator=" ">
-        <name-part name="family" text-case="uppercase"/>
-      </name>
-      <et-al font-style="italic"/>
-      <label form="short" prefix=" (" suffix=")"/>
-    </names>
+    <group delimiter=", ">
+      <names variable="container-author">
+        <name and="text" delimiter=", " delimiter-precedes-last="never" et-al-min="4" et-al-use-first="1" name-as-sort-order="all" sort-separator=" ">
+          <name-part name="family" text-case="uppercase"/>
+        </name>
+        <et-al font-style="italic"/>
+      </names>
+      <names variable="editor">
+        <name and="text" delimiter=", " delimiter-precedes-last="never" et-al-min="4" et-al-use-first="1" name-as-sort-order="all" sort-separator=" ">
+          <name-part name="family" text-case="uppercase"/>
+        </name>
+        <et-al font-style="italic"/>
+        <label form="short" prefix=" (" suffix=")"/>
+      </names>
+    </group>
   </macro>
   <!-- éd. X / trad. B. Arnal et al., placés après le titre -->
   <macro name="secondary-contributors">
@@ -245,6 +253,39 @@
       </if>
     </choose>
   </macro>
+  <!-- Essay in an exhibition catalogue (Book Section with Genre / Event Date in Extra) -->
+  <macro name="exhibition-essay">
+    <choose>
+      <if type="chapter">
+        <choose>
+          <if variable="genre event-date" match="any">
+            <group delimiter=", ">
+              <choose>
+                <if variable="genre">
+                  <text variable="genre"/>
+                </if>
+                <else>
+                  <text value="cat. exp."/>
+                </else>
+              </choose>
+              <choose>
+                <if variable="event-date">
+                  <group delimiter=", ">
+                    <text variable="event-place"/>
+                    <date variable="event-date">
+                      <date-part name="day" form="ordinal" suffix=" "/>
+                      <date-part name="month" suffix=" "/>
+                      <date-part name="year"/>
+                    </date>
+                  </group>
+                </if>
+              </choose>
+            </group>
+          </if>
+        </choose>
+      </if>
+    </choose>
+  </macro>
   <macro name="event-place-and-date">
     <choose>
       <if variable="event-date">
@@ -293,6 +334,19 @@
       </group>
       <text macro="collection"/>
     </group>
+  </macro>
+  <macro name="issue-number">
+    <choose>
+      <if is-numeric="issue">
+        <group delimiter="&#160;">
+          <label variable="issue" form="short"/>
+          <text variable="issue"/>
+        </group>
+      </if>
+      <else>
+        <text variable="issue"/>
+      </else>
+    </choose>
   </macro>
   <macro name="volume">
     <group delimiter="&#160;">
@@ -468,10 +522,7 @@
             <text variable="container-title" font-style="italic"/>
           </group>
           <text macro="volume"/>
-          <group delimiter="&#160;">
-            <label variable="issue" form="short"/>
-            <text variable="issue"/>
-          </group>
+          <text macro="issue-number"/>
           <text macro="issued-year"/>
         </group>
       </if>
@@ -484,10 +535,7 @@
             <text variable="container-title" font-style="italic"/>
           </group>
           <text macro="volume"/>
-          <group delimiter="&#160;">
-            <label variable="issue" form="short"/>
-            <text variable="issue"/>
-          </group>
+          <text macro="issue-number"/>
           <text macro="issued-full"/>
         </group>
       </else-if>
@@ -517,6 +565,7 @@
               <text variable="container-title" font-style="italic"/>
             </group>
           </group>
+          <text macro="exhibition-essay"/>
           <text macro="secondary-contributors"/>
           <choose>
             <if type="paper-conference" variable="container-title" match="all">
