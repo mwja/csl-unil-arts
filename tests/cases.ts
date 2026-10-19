@@ -932,6 +932,10 @@ export const shortNotes: typeof notes = [
   },
 ];
 
+// Variant "noms complets en bibliographie": the bibliography lists every name; notes keep et al.
+// Filled further down, once joubert2000/joubert2008 are declared.
+export const fullNameBibliographies: { name: string; items: Item[]; expected: string[] }[] = [];
+
 const joubert2000: Item = {
   id: "joubert2000", type: "book", author: [n("Joubert", "Fabienne")], title: "La Tapisserie au Moyen Âge",
   "publisher-place": "Rennes", publisher: "Éd. Ouest-France", issued: y(2000),
@@ -941,6 +945,36 @@ const joubert2008: Item = {
   title: "La Sculpture gothique en France, XIIe-XIIIe siècles",
   "publisher-place": "Paris", publisher: "Picard", issued: y(2008),
 };
+
+fullNameBibliographies.push(
+  {
+    name: "Trois auteurs : tous les noms en bibliographie",
+    items: [byId("gerard")],
+    expected: ["GÉRARD André-Marie, NORDON-GÉRARD Andrée et TOLLET Daniel, *Dictionnaire de la Bible*, Paris, Robert Laffont, 1989."],
+  },
+  {
+    name: "Plus de trois directeur·ice·s et traducteur·ice·s : tous les noms",
+    items: [byId("vaisse"), byId("felici")],
+    expected: [
+      "FELICI Lucio, *Encyclopédie de l’art*, trad. B. Arnal, C. Dupont et D. Martin, [Paris], Librairie générale française (coll. « Le livre de poche. Encyclopédies d’aujourd’hui »), 1992.",
+      "VAISSE Pierre, « Courajod et le problème de la Renaissance », in : RECHT Roland, SÉNÉCHAL Philippe, BARBILLON Claire et MARTIN François-René (éd.), *Histoire de l’histoire de l’art en France au XIXe siècle*, Paris, La documentation française, 2008, p. 95–112.",
+    ],
+  },
+  {
+    // With full lists, Id. no longer stands for a team after the same first author alone.
+    name: "Pas de faux Id. pour une équipe",
+    items: [
+      joubert2000,
+      { id: "j-team", type: "book", author: [n("Joubert", "Fabienne"), n("Quint", "Q"), n("Sachs", "S")], title: "Équipe", "publisher-place": "Paris", publisher: "Picard", issued: y(2001) },
+      joubert2008,
+    ],
+    expected: [
+      "JOUBERT Fabienne, *La Tapisserie au Moyen Âge*, Rennes, Éd. Ouest-France, 2000.",
+      "Id., *La Sculpture gothique en France, XIIe-XIIIe siècles*, Paris, Picard, 2008.",
+      "JOUBERT Fabienne, QUINT Q et SACHS S, *Équipe*, Paris, Picard, 2001.",
+    ],
+  },
+);
 
 export const bibliographies: { name: string; items: Item[]; expected: string[] }[] = [
   {

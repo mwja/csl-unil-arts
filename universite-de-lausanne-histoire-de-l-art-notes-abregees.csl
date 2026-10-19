@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generated from universite-de-lausanne-histoire-de-l-art.csl by scripts/build-notes-abregees.ts; do not edit by hand. -->
+<!-- Generated from universite-de-lausanne-histoire-de-l-art.csl by scripts/build-variants.ts; do not edit by hand. -->
 <style xmlns="http://purl.org/net/xbiblio/csl" class="note" version="1.0" demote-non-dropping-particle="never" page-range-format="expanded" default-locale="fr-FR">
   <info>
     <title>Université de Lausanne - Histoire de l'art (notes abrégées, Français)</title>
     <title-short>UNIL - Histoire de l'art (notes abrégées)</title-short>
     <id>http://www.zotero.org/styles/universite-de-lausanne-histoire-de-l-art-notes-abregees</id>
     <link href="http://www.zotero.org/styles/universite-de-lausanne-histoire-de-l-art-notes-abregees" rel="self"/>
-    <link href="http://www.zotero.org/styles/universite-de-lausanne-histoire-de-l-art" rel="template"/>
     <link href="http://www.zotero.org/styles/universite-de-lausanne-institut-d-archeologie-et-des-sciences-de-l-antiquite" rel="template"/>
     <link href="https://www.unil.ch/files/live/sites/lettres/files/04-domaines/hart/05-vie-etudiante/Guide%20du%20pros%c3%a9mianire%20(GPS)_f%c3%a9vrier%202025.pdf" rel="documentation"/>
     <author>

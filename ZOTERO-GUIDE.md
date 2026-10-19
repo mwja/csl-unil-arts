@@ -1,8 +1,6 @@
 # Zotero cheat sheet — UNIL Histoire de l'art (GPS, février 2025)
 
-One entry per section of the *Guide du proséminaire* (p. 12–18), in the guide's order. Each
-shows the Zotero item type, a complete line as the style prints it, with **the part that entry
-is about in bold**, and what to fill in.
+Covers bits that Zotoro doesn't have fields for (even Zotoro 10)
 
 **Extra field:** Zotero lacks a few fields the guide needs. Type them on their own lines at the
 top of the item's **Extra** field, as `Name: value` (e.g. `Genre: cat. exp.`).
@@ -77,6 +75,9 @@ top of the item's **Extra** field, as `Name: value` (e.g. `Genre: cat. exp.`).
 > **GÉRARD André-Marie *et al.***, *Dictionnaire de la Bible*, Paris, Robert Laffont, 1989.
 
 - Enter **all** authors; the style keeps the first and adds *et al.*
+- Teacher wants every name in the bibliography? Use the style « noms complets »:
+
+> **GÉRARD André-Marie, NORDON-GÉRARD Andrée et TOLLET Daniel**, *Dictionnaire de la Bible*, Paris, Robert Laffont, 1989.
 
 ### L'auteur·ice est directeur·ice ou éditeur·ice de la publication
 

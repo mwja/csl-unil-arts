@@ -10,12 +10,16 @@ février 2025, p. 11–18.
 |---|---|---|
 | `universite-de-lausanne-histoire-de-l-art.csl` | 1st time: full reference. After: `GUADET 1901, p. 40.` | Some cited works are **not** in your bibliography |
 | `universite-de-lausanne-histoire-de-l-art-notes-abregees.csl` | Always `GUADET 1901, p. 40.` | Everything you cite is in your bibliography (the guide's normal case: *Les références en bas de page*, p. 17–18) |
+| `universite-de-lausanne-histoire-de-l-art-noms-complets.csl` | Same as the main style | Your teacher wants every author in the **bibliography** instead of *et al.* (see below) |
 
-The two files only differ in the **notes**; the **bibliography is identical**. So "Create
+« Notes abrégées » only changes the **notes**; its bibliography is identical to the main style's. So "Create
 Bibliography from Items" looks the same with either, unless you set its Output Mode to **Notes**.
 Outside Word, Zotero doesn't know which note comes first, so every citation counts as a first
 one: the main style then always gives the full reference, notes abrégées always the short one.
-Both work for footnotes and endnotes (you choose those in Word / LibreOffice, not in the style).
+« Noms complets » only changes the **bibliography**: every author, editor and translator is listed
+(`GÉRARD André-Marie, NORDON-GÉRARD Andrée et TOLLET Daniel, …` instead of `GÉRARD André-Marie
+et al., …`). Bonus: the `Id.` trap described below can't happen with it.
+All of them work for footnotes and endnotes (you choose those in Word / LibreOffice, not in the style).
 
 **Install:** double-click the `.csl` file, or Zotero → Settings → Cite → **+**.
 You can switch a document between the two at any time (Zotero → Document Preferences in Word).
@@ -143,10 +147,10 @@ replaces an article's page range (*Les références en bas de page*, p. 17).
 
 ```sh
 npm install
-npm test          # 138 citeproc-js tests built from the guide's examples and real Zotero data
-npm run build     # regenerate the "notes abrégées" variant after editing the main style
+npm test          # citeproc-js tests built from the guide's examples and real Zotero data
+npm run build     # regenerate the two variants after editing the main style
 ```
 
-Only edit `universite-de-lausanne-histoire-de-l-art.csl`; the variant is generated from it (the
-tests fail if you forget `npm run build`). On some Linux Node builds TypeScript isn't built in,
+Only edit `universite-de-lausanne-histoire-de-l-art.csl`; both variants are generated from it by
+`scripts/build-variants.ts` (the tests fail if you forget `npm run build`). On some Linux Node builds TypeScript isn't built in,
 hence `tsx`.

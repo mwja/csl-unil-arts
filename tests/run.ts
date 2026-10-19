@@ -7,12 +7,13 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import CSL from "citeproc";
-import { cases, notes, bibliographies, shortNotes, type Item } from "./cases.ts";
-import { buildVariant, variantPath } from "../scripts/build-notes-abregees.ts";
+import { cases, notes, bibliographies, shortNotes, fullNameBibliographies, type Item } from "./cases.ts";
+import { buildNotesAbregees, buildNomsComplets, variants } from "../scripts/build-variants.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const style = readFileSync(join(root, "universite-de-lausanne-histoire-de-l-art.csl"), "utf8");
-const variant = buildVariant(style);
+const variant = buildNotesAbregees(style);
+const nomsComplets = buildNomsComplets(style);
 const locale = readFileSync(join(root, "locales", "locales-fr-FR.xml"), "utf8");
 const filter = process.argv[2];
 
@@ -56,8 +57,8 @@ function check(name: string, actual: string, expected: string) {
   }
 }
 
-function bibliography(items: Item[], keepNbsp = false): string[] {
-  const engine = makeEngine(items);
+function bibliography(items: Item[], keepNbsp = false, cslStyle = style): string[] {
+  const engine = makeEngine(items, cslStyle);
   engine.updateItems(items.map((it) => it.id));
   const [, entries] = engine.makeBibliography();
   return entries.map((e: string) => toMarkup(e, keepNbsp));
@@ -95,14 +96,31 @@ for (const n of notes) {
 }
 
 console.log("\nVariant « notes abrégées »");
-{
+for (const v of variants) {
   let onDisk = "";
-  try { onDisk = readFileSync(variantPath, "utf8"); } catch {}
-  check("variant file is up to date (npm run build)", String(onDisk === variant), "true");
+  try { onDisk = readFileSync(v.path, "utf8"); } catch {}
+  check(`${v.path.split("/").pop()} is up to date (npm run build)`, String(onDisk === v.build(style)), "true");
 }
 for (const n of shortNotes) {
   const out = renderNotes(n.items, n.seq, variant);
   n.expected.forEach((exp, i) => check(`${n.name} [note ${i + 1}]`, out[i], exp));
+}
+
+console.log("\nVariant « noms complets en bibliographie »");
+{
+  // Notes are unchanged.
+  for (const n of notes) {
+    const out = renderNotes(n.items, n.seq, nomsComplets);
+    n.expected.forEach((exp, i) => check(`unchanged note: ${n.name} [note ${i + 1}]`, out[i], exp));
+  }
+  // Entries without lists of three or more names are unchanged.
+  for (const c of cases) {
+    if (["author", "editor", "translator"].some((k) => ((c.item[k] as unknown[]) ?? []).length >= 3)) continue;
+    check(`unchanged entry: ${c.name}`, bibliography([c.item], false, nomsComplets)[0], c.bib);
+  }
+}
+for (const b of fullNameBibliographies) {
+  check(b.name, bibliography(b.items, false, nomsComplets).join("\n"), b.expected.join("\n"));
 }
 
 console.log("\nBibliography ordering");

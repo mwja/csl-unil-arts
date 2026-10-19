@@ -4,7 +4,7 @@
   "description": "CSL style UNIL histoire de l art",
   "scripts": {
     "test": "node --import tsx tests/run.ts",
-    "build": "node --import tsx scripts/build-notes-abregees.ts"
+    "build": "node --import tsx scripts/build-variants.ts"
   },
   "keywords": [],
   "author": "",
