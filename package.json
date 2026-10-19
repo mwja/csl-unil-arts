@@ -1,0 +1,16 @@
+{
+  "name": "csl-unil-arts",
+  "version": "1.0.0",
+  "description": "CSL style UNIL histoire de l art",
+  "scripts": {
+    "test": "node --import tsx tests/run.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "citeproc": "^2.4.63",
+    "tsx": "^4.23.15"
+  },
+  "type": "module"
+}
