@@ -9,7 +9,7 @@ février 2025, p. 11–18.
 | File | Notes look like | Use it when |
 |---|---|---|
 | `universite-de-lausanne-histoire-de-l-art.csl` | 1st time: full reference. After: `GUADET 1901, p. 40.` | Some cited works are **not** in your bibliography |
-| `universite-de-lausanne-histoire-de-l-art-notes-abregees.csl` | Always `GUADET 1901, p. 40.` | Everything you cite is in your bibliography (the guide's normal case, p. 18) |
+| `universite-de-lausanne-histoire-de-l-art-notes-abregees.csl` | Always `GUADET 1901, p. 40.` | Everything you cite is in your bibliography (the guide's normal case: *Les références en bas de page*, p. 17–18) |
 
 The two files only differ in the **notes**; the **bibliography is identical**. So "Create
 Bibliography from Items" looks the same with either, unless you set its Output Mode to **Notes**.
@@ -49,7 +49,7 @@ Zotero then compares neighbouring entries to add `Id.` and the letters in `1901a
 | `1901a` / `1901b` | Added automatically | Never added — type them yourself |
 | Your hand edits | Overwritten on every refresh (unless you "Unlink Citations" first) | Stay as you typed them |
 
-**The `Id.` trap (Word plugin only).** With three or more authors only the first name is printed
+**The `Id.` trap (Word plugin only; GPS *Normes bibliographiques*, p. 12).** With three or more authors only the first name is printed
 (`JOUBERT Fabienne et al.`), and Zotero doesn't count *et al.* as a name. So it thinks this is the
 same author as the line above:
 
@@ -67,7 +67,7 @@ one item at a time avoids it completely.
 Zotero is missing a few fields the guide needs. You type those on their own lines at the top of
 the **Extra** field, as `Name: value`.
 
-### Exhibition catalogue
+### Exhibition catalogue (GPS: *Catalogues d’exposition*, p. 14)
 
 Item type **Book**. In Extra:
 
@@ -94,24 +94,26 @@ the library catalogue the book was imported from, so they vary (`Exhibitions`,
 
 ### Other cases
 
-| You want | Item type | What to type |
-|---|---|---|
-| `[1989]` (first edition) | Book, Book Section | Original Date field: `1989` |
-| `1886–1892` (published over years) | any | Extra: `Issued: 1886/1892` (the normal Date field keeps only 1886) |
-| `4e éd.` | Book | Edition: `4` |
-| `(coll. « Quadrige », n° 215)` | Book | Series: `Quadrige`, Series Number: `215` |
-| `2 vol.` | Book | # of Volumes: `2` |
-| `à paraître` / `à paraître en 2014` | any | Extra: `Status: forthcoming` (+ Date `2014` if known) |
-| Thesis / mémoire | Thesis | Type: `thèse de doctorat inédite`; University: `Université de Genève` |
-| `actes du colloque, Paris/Rome, 2000` | Conference Paper | Extra: `Event Place: Paris/Rome` and `Event Date: 2000` |
-| Lexicon `…, 1987, t. VIII, p. 46` | Encyclopedia Article | Volume: `VIII`, Pages: `46` |
-| Online encyclopedia `[en ligne]` | Encyclopedia Article | URL, Accessed, Date = date put online; no Volume/Pages; Extra: `ISSN: 2677-6588` |
-| Web page `(BnF NAL 1203)` | Web Page | Extra: `Call Number: BnF NAL 1203` |
-| Archives `Genève, Archives d’État, Jur. Civ. E, n° 13, p. 57–78` | Manuscript | Place, Archive (or Institution), Loc. in Archive; Extra: `Page: 57-78` |
-| TV / radio `extrait de l’émission Misure, 11 min.` | TV / Radio Broadcast | Program Title, Running Time `11 min.`, Network |
-| Film / VHS | Video Recording | Director, Format `vidéocassette VHS`, Running Time, Place, Studio |
-| Two places or publishers | any | `Lyon/Dijon`, `PUL/Les Presses du réel` |
-| Several pages in a note | (in the citation dialog) | Page `56 et 137` → `p. 56 et 137` |
+| You want | Guide section (GPS) | Item type | What to type |
+|---|---|---|---|
+| `[1989]` (first edition) | *Édition traduite* / *Nouvelle édition et réédition*, p. 14 | Book, Book Section | Original Date field: `1989` |
+| `trad. B. Arnal et al.` | *Édition traduite*, p. 14 | any | Translator(s) |
+| `4e éd.` | *Nouvelle édition et réédition*, p. 14 | Book | Edition: `4` |
+| `(coll. « Quadrige », n° 215)` | *Ouvrages*, p. 13 | Book | Series: `Quadrige`, Series Number: `215` |
+| `2 vol.` | *Ouvrages*, p. 13 | Book | # of Volumes: `2` |
+| `(éd.)` after the name | *L’auteur·ice·x est directeur·ice·x ou éditeur·ice·x de la publication*, p. 13 | Book | Creator role: Editor |
+| `1886–1892` (published over years) | *Sources publiées* / *L’auteur·ice·x est directeur·ice·x…*, p. 13 | any | Extra: `Issued: 1886/1892` (the normal Date field keeps only 1886) |
+| `Lyon/Dijon, PUL/Les Presses du réel` | *Plusieurs lieux d’édition et/ou plusieurs maisons d’édition*, p. 13 | any | Place `Lyon/Dijon`, Publisher `PUL/Les Presses du réel` |
+| `à paraître` / `à paraître en 2014` | *Ouvrages à paraître* / *Date de parution inconnue*, p. 15–16 | any | Extra: `Status: forthcoming` (+ Date `2014` if known) |
+| Thesis / mémoire | *Thèse de doctorat non publiée* / *Mémoire de master non publié*, p. 16 | Thesis | Type: `thèse de doctorat inédite`; University: `Université de Genève` |
+| `actes du colloque, Paris/Rome, 2000` | *Actes de colloque*, p. 15 | Conference Paper | Extra: `Event Place: Paris/Rome` and `Event Date: 2000` |
+| Lexicon `…, 1987, t. VIII, p. 46` | *Article publié dans un lexique*, p. 15 | Encyclopedia Article | Volume: `VIII`, Pages: `46` |
+| Online encyclopedia `[en ligne]` | *Articles d’encyclopédie en ligne*, p. 16 | Encyclopedia Article | URL, Accessed, Date = date put online; no Volume/Pages; Extra: `ISSN: 2677-6588` |
+| Web page `(BnF NAL 1203)` | *Sites web*, p. 16 | Web Page | Extra: `Call Number: BnF NAL 1203` |
+| Archives `Genève, Archives d’État, Jur. Civ. E, n° 13, p. 57–78` | *Sources non publiées*, p. 12–13 | Manuscript | Place, Archive (or Institution), Loc. in Archive; Extra: `Page: 57-78` |
+| TV / radio `extrait de l’émission Misure, 11 min.` | *Filmographie/Documents audio*, p. 16 | TV / Radio Broadcast | Program Title, Running Time `11 min.`, Network |
+| Film / VHS | *Filmographie/Documents audio*, p. 16 | Video Recording | Director, Format `vidéocassette VHS`, Running Time, Place, Studio |
+| Several pages in a note | *Les références en bas de page*, p. 17–18 | (in the citation dialog) | Page `56 et 137` → `p. 56 et 137` |
 
 **Books added by ISBN** usually need tidying: the artist is often listed as an editor, places
 come as `Vanves : Paris` (change to `Vanves/Paris`), and catalogues aren't marked (add
@@ -121,17 +123,18 @@ come as `Vanves : Paris` (change to `Vanves/Paris`), and catalogues aren't marke
 
 These happen in both the Word plugin and copy-paste.
 
-| Problem | Example | Workaround |
-|---|---|---|
-| Institutions come out in capitals | `BIBLIOTHÈQUE NATIONALE DE FRANCE` (guide: normal case) | Fix by hand in the final text |
-| `Id.` is not in italics | `Id.` (guide: *Id.*) | Italicise by hand in the final text |
-| `p. 56 et p. 137` | becomes `p. 56 et 137` | Fine to leave, or fix by hand |
-| A range as first-edition date | `[1863–1872]` becomes `[1863]` | Fix by hand |
-| Online dates | `mis en ligne le 22/06/2020` (guide: `22/06/20`) | Deliberate: a year-only date would otherwise print as `mis en ligne 20` |
+| Problem | Guide section (GPS) | Example | Workaround |
+|---|---|---|---|
+| Institutions come out in capitals | *Sites web*, p. 16 | `BIBLIOTHÈQUE NATIONALE DE FRANCE` (guide: normal case) | Fix by hand in the final text |
+| `Id.` is not in italics | *Normes bibliographiques*, p. 12 | `Id.` (guide: *Id.*) | Italicise by hand in the final text |
+| `p. 56 et p. 137` | *Les références en bas de page*, p. 18 | becomes `p. 56 et 137` | Fine to leave, or fix by hand |
+| A range as first-edition date | *Nouvelle édition et réédition*, p. 14 (VIOLLET-LE-DUC) | `[1863–1872]` becomes `[1863]` | Fix by hand |
+| Online dates | *Articles d’encyclopédie en ligne*, p. 16 | `mis en ligne le 22/06/2020` (guide: `22/06/20`) | Deliberate: a year-only date would otherwise print as `mis en ligne 20` |
 
-Other deliberate choices where the guide contradicts itself: always `in :` (the guide also uses
-`dans`); `, à paraître en 2014` with a comma; in a note, the cited page replaces an article's page
-range.
+Other deliberate choices where the guide contradicts itself: always `in :` (*Article ou chapitre
+dans un ouvrage collectif*, p. 15, says it is obligatory, but its examples also use `dans`);
+`, à paraître en 2014` with a comma (*Ouvrages à paraître*, p. 15); in a note, the cited page
+replaces an article's page range (*Les références en bas de page*, p. 17).
 
 ## For developers
 
