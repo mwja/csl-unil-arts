@@ -6,6 +6,8 @@
 // (Extra "Issued: 1879/1883"), so those cases use `note`.
 // Where the expected output deviates from the guide's printed example, a comment says why.
 
+import { readFileSync } from "node:fs";
+
 export type Name = { family?: string; given?: string; literal?: string };
 export type Item = { id: string; type: string; [key: string]: unknown };
 
@@ -610,6 +612,42 @@ export const cases: { name: string; item: Item; bib: string }[] = [
     bib: "VASARI Giorgio, *Les Vies des meilleurs peintres, sculpteurs et architectes* [1568], éd. A. Chastel, Arles, Actes Sud, 2005.",
   },
 ];
+
+// Real Zotero import of ISBN 978-2-7541-1357-1 (Add Item by Identifier → Library of Congress
+// translator, run through Zotero's translation-server; CSL-JSON from its csljson export).
+// tests/fixtures/isbn-9782754113571.zotero.json shows the imported tags: "Exhibitions",
+// "Exhibitions catalogs", "Exhibition catalogs" (MARC 600 $v and two 655 fields).
+const [muchaImported] = JSON.parse(
+  readFileSync(new URL("./fixtures/isbn-9782754113571.csl.json", import.meta.url), "utf8"),
+) as Item[];
+
+cases.push(
+  {
+    // As imported: the artist and two institutions came in as editors, the MARC place/publisher
+    // punctuation is kept, and nothing marks it as a catalogue (tags are invisible to CSL).
+    name: "ISBN 978-2754113571 tel qu’importé par Zotero",
+    item: muchaImported,
+    // The LoC record spells "maître" with a combining circumflex (i + U+0302), kept by Zotero.
+    bib: "MUCHA Alphonse *et al.* (éd.), *Alphonse Mucha: mai\u0302tre de l’Art nouveau*, Vanves : Paris, Hazan ; Culturespaces, 2023.",
+  },
+  {
+    // After tidying in Zotero: Sato as the only editor, places/publishers with "/", French
+    // spacing in the title, and in Extra: "Genre: cat. exp.", "Event Place: Aix-en-Provence,
+    // Hôtel de Caumont", "Event Date: 2023/2024" (record: "exhibition held at Hôtel de Caumont,
+    // Aix-en-Provence, France, winter 2023-2024").
+    name: "ISBN 978-2754113571 après mise en forme",
+    item: {
+      ...muchaImported,
+      id: "mucha-tidy",
+      editor: [n("Sato", "Tomoko")],
+      title: "Alphonse Mucha : maître de l’Art nouveau",
+      "publisher-place": "Vanves/Paris",
+      publisher: "Hazan/Culturespaces",
+      note: "genre: cat. exp.\nevent-place: Aix-en-Provence, Hôtel de Caumont\nevent-date: 2023/2024",
+    },
+    bib: "SATO Tomoko (éd.), *Alphonse Mucha : maître de l’Art nouveau*, cat. exp., Aix-en-Provence, Hôtel de Caumont, 2023–2024, Vanves/Paris, Hazan/Culturespaces, 2023.",
+  },
+);
 
 const byId = (id: string) => cases.find((c) => c.item.id === id)!.item;
 

@@ -1,0 +1,39 @@
+[
+  {
+    "id": "6KXUF8Y7",
+    "type": "book",
+    "abstract": "\"L'artiste visionnaire Alphonse Mucha (1860-1939) a révolutionné le rapport à l'art de ses contemporains en appliquant son esthétique si caractéristique à de multiples domaines comme les affiches, la publicité, la décoration intérieure ou encore le théâtre. Grâce à sa rencontre providentielle en 1894 avec l'immense actrice Sarah Bernhardt, le Tout-Paris de la Belle Époque s'est paré des œuvres de ce créateur virtuose, qui a élaboré et imposé le style Art nouveau comme l'avant-garde artistique incontournable en ce tournant de siècle. L'exposition \"Mucha. Maître de l'Art nouveau\" met à l'honneur la pensée engagée de cet artiste tchèque, en tant qu'élément constitutif de son œuvre, empreinte de beauté et d'harmonie. À côté des célèbres affiches et panneaux décoratifs de l'époque, révélant Mucha comme prophète de l'Art nouveau, cet ouvrage, et l'exposition qu'il accompagne, présente aussi ses mystérieuses et puissantes peintures, encore trop méconnues, révélant la facette mystique et politique de son œuvre. À travers près de cent vingt œuvres provenant de la Fondation Mucha, il met en lumière toute la splendeur et l'évolution de la grandeur artistique de Mucha où mysticisme, symbolisme, identité slave et beauté se côtoient.\"--Page 4 of cover",
+    "call-number": "NC1850.M8 A4 2023",
+    "ISBN": "9782754113571",
+    "language": "fre",
+    "number-of-pages": "187",
+    "publisher": "Hazan ; Culturespaces",
+    "publisher-place": "Vanves : Paris",
+    "source": "Library of Congress ISBN",
+    "title": "Alphonse Mucha: maître de l'Art nouveau",
+    "title-short": "Alphonse Mucha",
+    "editor": [
+      {
+        "family": "Mucha",
+        "given": "Alphonse"
+      },
+      {
+        "family": "Sato",
+        "given": "Tomoko"
+      },
+      {
+        "literal": "Hôtel de Caumont (Aix-en-Provence, France)"
+      },
+      {
+        "literal": "Mucha Foundation"
+      }
+    ],
+    "issued": {
+      "date-parts": [
+        [
+          "2023"
+        ]
+      ]
+    }
+  }
+]

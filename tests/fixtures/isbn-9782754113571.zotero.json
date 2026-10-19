@@ -1,0 +1,66 @@
+[
+  {
+    "key": "6KXUF8Y7",
+    "version": 0,
+    "itemType": "book",
+    "creators": [
+      {
+        "firstName": "Alphonse",
+        "lastName": "Mucha",
+        "creatorType": "editor"
+      },
+      {
+        "firstName": "Tomoko",
+        "lastName": "Sato",
+        "creatorType": "editor"
+      },
+      {
+        "name": "Hôtel de Caumont (Aix-en-Provence, France)",
+        "creatorType": "editor"
+      },
+      {
+        "name": "Mucha Foundation",
+        "creatorType": "editor"
+      }
+    ],
+    "tags": [
+      {
+        "tag": "Mucha, Alphonse",
+        "type": 1
+      },
+      {
+        "tag": "Exhibitions",
+        "type": 1
+      },
+      {
+        "tag": "Exhibitions catalogs",
+        "type": 1
+      },
+      {
+        "tag": "Exhibition catalogs",
+        "type": 1
+      }
+    ],
+    "ISBN": "9782754113571",
+    "language": "fre",
+    "abstractNote": "\"L'artiste visionnaire Alphonse Mucha (1860-1939) a révolutionné le rapport à l'art de ses contemporains en appliquant son esthétique si caractéristique à de multiples domaines comme les affiches, la publicité, la décoration intérieure ou encore le théâtre. Grâce à sa rencontre providentielle en 1894 avec l'immense actrice Sarah Bernhardt, le Tout-Paris de la Belle Époque s'est paré des œuvres de ce créateur virtuose, qui a élaboré et imposé le style Art nouveau comme l'avant-garde artistique incontournable en ce tournant de siècle. L'exposition \"Mucha. Maître de l'Art nouveau\" met à l'honneur la pensée engagée de cet artiste tchèque, en tant qu'élément constitutif de son œuvre, empreinte de beauté et d'harmonie. À côté des célèbres affiches et panneaux décoratifs de l'époque, révélant Mucha comme prophète de l'Art nouveau, cet ouvrage, et l'exposition qu'il accompagne, présente aussi ses mystérieuses et puissantes peintures, encore trop méconnues, révélant la facette mystique et politique de son œuvre. À travers près de cent vingt œuvres provenant de la Fondation Mucha, il met en lumière toute la splendeur et l'évolution de la grandeur artistique de Mucha où mysticisme, symbolisme, identité slave et beauté se côtoient.\"--Page 4 of cover",
+    "title": "Alphonse Mucha: maître de l'Art nouveau",
+    "numPages": "187",
+    "callNumber": "NC1850.M8 A4 2023",
+    "place": "Vanves : Paris",
+    "publisher": "Hazan ; Culturespaces",
+    "date": "2023",
+    "libraryCatalog": "Library of Congress ISBN",
+    "shortTitle": "Alphonse Mucha"
+  },
+  {
+    "itemType": "note",
+    "parentItem": "6KXUF8Y7",
+    "note": "Published on the occasion of the exhibition held at Hôtel de Caumont, Aix-en-Provence, France, winter 2023-2024 \"Hôtel de Caumont-Centre d'art, Aix-en-Provence ; Mucha Foundation\"--At bottom of title page"
+  },
+  {
+    "itemType": "note",
+    "parentItem": "6KXUF8Y7",
+    "note": "Essais -- Alphonse Mucha : le culte de la beauté et des symboles -- Quand Alphonse Mucha rencontre Sarah Bernhardt -- 1897, une année décisive -- Catalogue -- La rencontre providentielle avec Sarah Bernhardt -- Le Style Mucha, son évolution et sa diffusion -- Paris 1900, un nouveau départ -- Une vision, les Slaves au service de l'humanité -- Mucha et la photographie"
+  }
+]
