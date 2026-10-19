@@ -500,7 +500,7 @@ export const cases: { name: string; item: Item; bib: string }[] = [
       id: "talk", type: "speech", author: [n("Kaenel", "Philippe")], title: "Conférence",
       "event-place": "Lausanne", "event-title": "Colloque de la Section", issued: y(2019),
     },
-    bib: "KAENEL Philippe, *Conférence*, Lausanne, 2019.",
+    bib: "KAENEL Philippe, *Conférence*, Colloque de la Section, Lausanne, 2019.",
   },
   {
     name: "Œuvre d’art, lieu du champ Place de Zotero",
@@ -792,6 +792,34 @@ export const notes: {
     expected: [
       "DUPONT Anne, Blog, *Page* [en ligne], mis en ligne 2020, https://example.org (consulté le 2 janvier 2024).",
       "DUPONT 2020, p. 3.",
+    ],
+  },
+  {
+    name: "Deux articles en ligne de la même année : suffixe aussi dans la référence",
+    items: [
+      { id: "kemp-a", type: "entry-encyclopedia", author: [n("Kemp", "Martin")], title: "Perspective", "container-title": "Grove Art Online", publisher: "Oxford University Press", issued: y(2003), URL: "https://example.org/a" },
+      { id: "kemp-b", type: "entry-encyclopedia", author: [n("Kemp", "Martin")], title: "Vanishing point", "container-title": "Grove Art Online", publisher: "Oxford University Press", issued: y(2003), URL: "https://example.org/b" },
+    ],
+    seq: [[{ id: "kemp-a" }], [{ id: "kemp-b" }], [{ id: "kemp-a", locator: "2" }], [{ id: "kemp-b", locator: "3" }]],
+    expected: [
+      "KEMP Martin, « Perspective », *Grove Art Online* [en ligne], mis en ligne 2003a, https://example.org/a.",
+      "KEMP Martin, « Vanishing point », *Grove Art Online* [en ligne], mis en ligne 2003b, https://example.org/b.",
+      "KEMP 2003a, p. 2.",
+      "KEMP 2003b, p. 3.",
+    ],
+  },
+  {
+    name: "Deux pages web sans date, même auteur et même titre",
+    items: [
+      { id: "web-nd-a", type: "webpage", author: [n("Dupont", "Anne")], title: "Pietà", URL: "https://example.org/a" },
+      { id: "web-nd-b", type: "webpage", author: [n("Dupont", "Anne")], title: "Pietà", URL: "https://example.org/b" },
+    ],
+    seq: [[{ id: "web-nd-a" }], [{ id: "web-nd-b" }], [{ id: "web-nd-a", locator: "1" }], [{ id: "web-nd-b", locator: "2" }]],
+    expected: [
+      "DUPONT Anne, *Pietà* [en ligne], s. d. a, https://example.org/a.",
+      "DUPONT Anne, *Pietà* [en ligne], s. d. b, https://example.org/b.",
+      "DUPONT, *Pietà*, s. d. a, p. 1.",
+      "DUPONT, *Pietà*, s. d. b, p. 2.",
     ],
   },
   {

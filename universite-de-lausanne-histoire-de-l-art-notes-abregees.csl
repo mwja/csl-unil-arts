@@ -515,11 +515,21 @@
   </macro>
   <!-- « mis en ligne le 22/06/2020 »; partial dates give « mis en ligne 06/2020 » / « mis en ligne 2020 » -->
   <macro name="online-date">
-    <date variable="issued" prefix="mis en ligne ">
-      <date-part name="day" form="numeric-leading-zeros" prefix="le " suffix="/"/>
-      <date-part name="month" form="numeric-leading-zeros" suffix="/"/>
-      <date-part name="year"/>
-    </date>
+    <choose>
+      <if variable="issued">
+        <group prefix="mis en ligne ">
+          <date variable="issued">
+            <date-part name="day" form="numeric-leading-zeros" prefix="le " suffix="/"/>
+            <date-part name="month" form="numeric-leading-zeros" suffix="/"/>
+            <date-part name="year"/>
+          </date>
+          <text variable="year-suffix"/>
+        </group>
+      </if>
+      <else>
+        <text variable="year-suffix" prefix="s. d. "/>
+      </else>
+    </choose>
   </macro>
   <macro name="online">
     <group delimiter=" ">
@@ -730,6 +740,7 @@
           <text macro="title"/>
           <text variable="medium"/>
           <text variable="dimensions"/>
+          <text variable="event-title"/>
           <text macro="place-any"/>
           <text variable="publisher"/>
           <text macro="issued-year"/>
@@ -842,12 +853,7 @@
             <else>
               <text macro="author-short"/>
               <text macro="title-short"/>
-              <group>
-                <date variable="issued">
-                  <date-part name="year"/>
-                </date>
-                <text variable="year-suffix"/>
-              </group>
+              <text variable="year-suffix" prefix="s. d. "/>
             </else>
           </choose>
         </else-if>
