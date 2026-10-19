@@ -398,7 +398,10 @@
   <!-- year-suffix is rendered explicitly so undated and forthcoming works can be disambiguated too -->
   <macro name="issued-year">
     <choose>
-      <if variable="status">
+      <if type="standard patent" match="any">
+        <text macro="plain-year"/>
+      </if>
+      <else-if variable="status">
         <!-- Any Status value (forthcoming, in press...) renders as « à paraître » -->
         <choose>
           <if variable="issued">
@@ -417,7 +420,7 @@
             <text variable="year-suffix" prefix=" "/>
           </else>
         </choose>
-      </if>
+      </else-if>
       <else-if variable="issued">
         <date variable="issued">
           <date-part name="year"/>
@@ -432,9 +435,12 @@
   </macro>
   <macro name="issued-full">
     <choose>
-      <if variable="status">
-        <text macro="issued-year"/>
+      <if type="standard patent" match="any">
+        <text macro="plain-year"/>
       </if>
+      <else-if variable="status">
+        <text macro="issued-year"/>
+      </else-if>
       <else-if variable="issued">
         <date variable="issued">
           <date-part name="day" form="ordinal" suffix=" "/>
@@ -449,11 +455,29 @@
       </else>
     </choose>
   </macro>
+  <!-- Standards and patents: Zotero exports their (legal) status as `status`, which is not « à paraître » -->
+  <macro name="plain-year">
+    <choose>
+      <if variable="issued">
+        <date variable="issued">
+          <date-part name="year"/>
+        </date>
+        <text variable="year-suffix"/>
+      </if>
+      <else>
+        <text term="no date" form="short"/>
+        <text variable="year-suffix" prefix=" "/>
+      </else>
+    </choose>
+  </macro>
   <macro name="year-short">
     <choose>
-      <if variable="status">
-        <text macro="issued-year"/>
+      <if type="standard patent" match="any">
+        <text macro="plain-year"/>
       </if>
+      <else-if variable="status">
+        <text macro="issued-year"/>
+      </else-if>
       <else-if variable="issued">
         <date variable="issued">
           <date-part name="year"/>
@@ -680,12 +704,23 @@
           <text macro="title"/>
           <group delimiter=" ">
             <text value="extrait de l’émission"/>
-            <text variable="container-title" font-style="italic"/>
+            <choose>
+              <if variable="container-title">
+                <text variable="container-title" font-style="italic"/>
+              </if>
+              <else>
+                <!-- Zotero Podcast: the show is its Series Title -->
+                <text variable="collection-title" font-style="italic"/>
+              </else>
+            </choose>
           </group>
           <text variable="medium"/>
           <text variable="dimensions"/>
           <text macro="issued-full"/>
-          <text macro="publisher"/>
+          <group delimiter=", ">
+            <text macro="place-any"/>
+            <text variable="publisher"/>
+          </group>
         </group>
       </else-if>
       <!-- Film / document audio -->
@@ -796,14 +831,25 @@
           </choose>
         </if>
         <else-if type="webpage post post-weblog" match="any">
-          <text macro="author-short"/>
-          <text macro="title-short"/>
-          <group>
-            <date variable="issued">
-              <date-part name="year"/>
-            </date>
-            <text variable="year-suffix"/>
-          </group>
+          <choose>
+            <if variable="issued author" match="all">
+              <text macro="short-name-year"/>
+            </if>
+            <else-if variable="issued">
+              <text macro="title-short"/>
+              <text macro="year-short"/>
+            </else-if>
+            <else>
+              <text macro="author-short"/>
+              <text macro="title-short"/>
+              <group>
+                <date variable="issued">
+                  <date-part name="year"/>
+                </date>
+                <text variable="year-suffix"/>
+              </group>
+            </else>
+          </choose>
         </else-if>
         <else-if variable="author director composer host editor" match="any">
           <text macro="short-name-year"/>

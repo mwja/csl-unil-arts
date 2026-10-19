@@ -135,6 +135,8 @@ export const cases: { name: string; item: Item; bib: string }[] = [
     bib: "JANSON Horst Woldemar, *Histoire de l’art : panorama des arts plastiques des origines à nos jours* [1970], 4e éd., Paris, Ars Mundi, 1987.",
   },
   {
+    // Zotero 10 keeps only the first year of an Original Date range (Extra "Original Date:" is
+    // migrated into the field); this range is what citeproc would need, see README.
     name: "Réédition (date originale sur plusieurs années)",
     item: {
       id: "viollet", type: "book", author: [n("Viollet-le-Duc", "Eugène-Emmanuel")],
@@ -542,10 +544,11 @@ export const cases: { name: string; item: Item; bib: string }[] = [
     bib: "BENJAMIN Walter, « L’œuvre d’art à l’époque de sa reproduction mécanisée » [1936], in : *Écrits français*, Paris, Gallimard, 1991, p. 177–220.",
   },
   {
+    // Zotero exports a Podcast as broadcast, the podcaster as host and the show as collection-title.
     name: "Podcast / émission (animateur·ice)",
     item: {
       id: "podcast", type: "broadcast", host: [n("Dupont", "Anne")], title: "Épisode 3",
-      "container-title": "Podcast art", issued: d(2022, 3, 1),
+      "collection-title": "Podcast art", issued: d(2022, 3, 1),
     },
     bib: "DUPONT Anne, *Épisode 3*, extrait de l’émission *Podcast art*, 1er mars 2022.",
   },
@@ -559,6 +562,15 @@ export const cases: { name: string; item: Item; bib: string }[] = [
       note: "genre: cat. exp., Karlsruhe, ZKM, 4 mai–1er septembre 2002", publisher: "MIT Press", issued: y(2002),
     },
     bib: "LATOUR Bruno (éd.), *Iconoclash*, cat. exp., Karlsruhe, ZKM, 4 mai–1er septembre 2002, Cambridge (Mass.), MIT Press, 2002.",
+  },
+  {
+    // Zotero exports a Standard's Status (and a Patent's Legal Status) as `status`.
+    name: "Norme avec statut (pas « à paraître »)",
+    item: {
+      id: "iso", type: "standard", author: [{ literal: "ISO" }], title: "Information et documentation",
+      status: "Publiée", "publisher-place": "Genève", publisher: "ISO", issued: y(2021),
+    },
+    bib: "ISO, *Information et documentation*, Genève, ISO, 2021.",
   },
   // ---------- Zotero 7 (schema <= v39) exports Place as both publisher-place and event-place ----------
   {
@@ -731,6 +743,27 @@ export const notes: {
       "DUPONT Jean 2000, p. 1.",
       "DUPONT Marie 2000, p. 2.",
     ],
+  },
+  {
+    name: "Site web daté d’un·e auteur·ice : NOM année",
+    items: [{
+      id: "web-person", type: "webpage", author: [n("Dupont", "Anne")], "container-title": "Blog",
+      title: "Page", issued: y(2020), URL: "https://example.org", accessed: d(2024, 1, 2),
+    }],
+    seq: [[{ id: "web-person" }], [{ id: "web-person", locator: "3" }]],
+    expected: [
+      "DUPONT Anne, Blog, *Page* [en ligne], mis en ligne 2020, https://example.org (consulté le 2 janvier 2024).",
+      "DUPONT 2020, p. 3.",
+    ],
+  },
+  {
+    name: "Norme : forme abrégée sans « à paraître »",
+    items: [{
+      id: "iso-n", type: "standard", author: [{ literal: "ISO" }], title: "Information et documentation",
+      status: "Publiée", "publisher-place": "Genève", publisher: "ISO", issued: y(2021),
+    }],
+    seq: [[{ id: "iso-n" }], [{ id: "iso-n", locator: "4" }]],
+    expected: ["ISO, *Information et documentation*, Genève, ISO, 2021.", "ISO 2021, p. 4."],
   },
   {
     name: "Même auteur, deux œuvres sans date",

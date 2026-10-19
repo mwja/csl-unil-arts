@@ -37,7 +37,7 @@ Fields Zotero lacks go on their own lines at the top of **Extra** (`Key: value`)
 | Case | Item type | What to enter |
 |---|---|---|
 | Exhibition catalogue | Book | Extra: `Genre: cat. exp.` and/or `Event Date: 2002-05-04/2002-09-01` (either makes it a catalogue); add `Event Place: Karlsruhe, ZKM` for the venue, printed only with an Event Date |
-| Original edition date `[1989]` | Book | Extra: `Original Date: 1989` (range: `1863/1872`) |
+| Original edition date `[1989]` | Book, Book Section | Original Date field (or Extra `Original Date: 1989`). Zotero keeps only the first year of a range, so `[1863–1872]` is not possible |
 | Publication over several years `1886–1892` | any | Extra: `Issued: 1886/1892` (the Date field keeps only the first year) |
 | Essay in an exhibition catalogue | Book Section | Same Extra lines as for the catalogue (`Genre: cat. exp.`, `Event Date:`…) |
 | Forthcoming (`à paraître`) | any | Extra: `Status: forthcoming` (date optional → `à paraître en 2014`) |
