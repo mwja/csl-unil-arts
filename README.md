@@ -26,6 +26,8 @@ You can switch a document between the two at any time (Zotero → Document Prefe
 
 **Printable cheat sheet:** [`ZOTERO-GUIDE.md`](ZOTERO-GUIDE.md) goes through the guide section by
 section: item type, the line you get, and what to fill in.
+**One-page version:** [`MINI-GUIDE.md`](MINI-GUIDE.md) — just the Extra-field tricks (catalogues,
+dates, à paraître…) and the usual pitfalls.
 
 ## What you get
 
