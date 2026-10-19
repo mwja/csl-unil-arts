@@ -20,6 +20,9 @@ Both work for footnotes and endnotes (you choose those in Word / LibreOffice, no
 **Install:** double-click the `.csl` file, or Zotero → Settings → Cite → **+**.
 You can switch a document between the two at any time (Zotero → Document Preferences in Word).
 
+**Printable cheat sheet:** [`ZOTERO-GUIDE.md`](ZOTERO-GUIDE.md) goes through the guide section by
+section: item type, the line you get, and what to fill in.
+
 ## What you get
 
 ```
