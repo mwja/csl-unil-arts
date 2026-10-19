@@ -15,6 +15,7 @@ const range = (a: number[], b: number[]) => ({ "date-parts": [a, b] });
 export const cases: { name: string; item: Item; bib: string }[] = [
   // ---------- Sources ----------
   {
+    // Zotero's Manuscript type has no Pages field: enter "Page: 57-78" in Extra.
     name: "Source non publiée (archives)",
     item: {
       id: "arlaud-testament", type: "manuscript",
@@ -297,7 +298,7 @@ export const cases: { name: string; item: Item; bib: string }[] = [
   {
     name: "Thèse de doctorat non publiée",
     item: {
-      id: "eidenbenz", type: "thesis", author: [n("Eidenbenz", "Céline")],
+      id: "eidenbenz", type: "thesis", author: [n("Eidenbenz", "Céline")], "publisher-place": "Genève",
       title: "Expressions du déséquilibre : l’hystérie, l’artiste et le médecin (1870–1914)",
       genre: "thèse de doctorat inédite", publisher: "Université de Genève", issued: y(2010),
     },
@@ -439,6 +440,42 @@ export const cases: { name: string; item: Item; bib: string }[] = [
       medium: "CD", publisher: "Erato", issued: y(1999),
     },
     bib: "SATIE Erik, *Gymnopédies*, CD, Erato, 1999.",
+  },
+  {
+    name: "Lettre (Zotero Letter) conservée dans un fonds",
+    item: {
+      id: "vallotton", type: "personal_communication", author: [n("Vallotton", "Félix")],
+      title: "Lettre à Hedy Hahnloser", issued: d(1912, 3, 4), "archive-place": "Winterthour",
+      archive: "Villa Flora", archive_location: "Fonds Hahnloser, n° 12",
+    },
+    bib: "VALLOTTON Félix, *Lettre à Hedy Hahnloser*, 4 mars 1912, Winterthour, Villa Flora, Fonds Hahnloser, n° 12.",
+  },
+  // ---------- Zotero 7 (schema <= v39) exports Place as both publisher-place and event-place ----------
+  {
+    name: "Zotero 7 : un livre avec lieu n’est pas un catalogue",
+    item: {
+      id: "neraudau-z7", type: "book", author: [n("Néraudau", "Jean-Pierre")],
+      title: "Dictionnaire d’histoire de l’art", "publisher-place": "Paris", "event-place": "Paris", publisher: "PUF",
+      "collection-title": "Quadrige", "collection-number": "215", issued: y(1996),
+    },
+    bib: "NÉRAUDAU Jean-Pierre, *Dictionnaire d’histoire de l’art*, Paris, PUF (coll. « Quadrige », n° 215), 1996.",
+  },
+  {
+    name: "Zotero 7 : catalogue sans dates, le lieu n’est pas répété",
+    item: {
+      id: "mucha-z7", type: "book", title: "Alphonse Mucha : maître de l’Art nouveau", genre: "cat. exp.",
+      "publisher-place": "Vanves", "event-place": "Vanves", publisher: "Hazan", issued: y(2023),
+    },
+    bib: "*Alphonse Mucha : maître de l’Art nouveau*, cat. exp., Vanves, Hazan, 2023.",
+  },
+  {
+    name: "Zotero 7 : actes de colloque, le lieu n’est pas répété",
+    item: {
+      id: "michel-z7", type: "paper-conference", author: [n("Michel", "Christian")], title: "Bellori",
+      "container-title": "L’Idéal classique", "publisher-place": "Paris", "event-place": "Paris",
+      publisher: "Somogy", issued: y(2002), page: "105-116",
+    },
+    bib: "MICHEL Christian, « Bellori », in : *L’Idéal classique*, actes du colloque, Paris, Somogy, 2002, p. 105–116.",
   },
   // ---------- Misc ----------
   {
@@ -586,6 +623,48 @@ export const notes: {
     ],
   },
   {
+    name: "Même auteur, deux œuvres sans date",
+    items: [
+      { id: "nd-a", type: "book", author: [n("Dupont", "Jean")], title: "Album", "publisher-place": "Paris", publisher: "PUF" },
+      { id: "nd-b", type: "book", author: [n("Dupont", "Jean")], title: "Bréviaire", "publisher-place": "Paris", publisher: "PUF" },
+    ],
+    seq: [[{ id: "nd-a" }], [{ id: "nd-b" }], [{ id: "nd-a", locator: "5" }], [{ id: "nd-b", locator: "6" }]],
+    expected: [
+      "DUPONT Jean, *Album*, Paris, PUF, s. d. a.",
+      "DUPONT Jean, *Bréviaire*, Paris, PUF, s. d. b.",
+      "DUPONT s. d. a, p. 5.",
+      "DUPONT s. d. b, p. 6.",
+    ],
+  },
+  {
+    name: "Même auteur, deux travaux à paraître",
+    items: [
+      { id: "fc-a", type: "chapter", author: [n("Kaenel", "Philippe")], title: "Alpha", "container-title": "Livre A", status: "forthcoming" },
+      { id: "fc-b", type: "chapter", author: [n("Kaenel", "Philippe")], title: "Bêta", "container-title": "Livre B", status: "forthcoming" },
+    ],
+    seq: [[{ id: "fc-a" }], [{ id: "fc-b" }], [{ id: "fc-a", locator: "5" }], [{ id: "fc-b", locator: "6" }]],
+    expected: [
+      "KAENEL Philippe, « Alpha », in : *Livre A*, à paraître a.",
+      "KAENEL Philippe, « Bêta », in : *Livre B*, à paraître b.",
+      "KAENEL à paraître a, p. 5.",
+      "KAENEL à paraître b, p. 6.",
+    ],
+  },
+  {
+    name: "Même nom, années différentes : pas de prénom",
+    items: [
+      { id: "dj-2000", type: "book", author: [n("Dupont", "Jean")], title: "Un", "publisher-place": "Paris", publisher: "PUF", issued: y(2000) },
+      { id: "dm-2005", type: "book", author: [n("Dupont", "Marie")], title: "Deux", "publisher-place": "Paris", publisher: "PUF", issued: y(2005) },
+    ],
+    seq: [[{ id: "dj-2000" }], [{ id: "dm-2005" }], [{ id: "dj-2000", locator: "1" }], [{ id: "dm-2005", locator: "2" }]],
+    expected: [
+      "DUPONT Jean, *Un*, Paris, PUF, 2000.",
+      "DUPONT Marie, *Deux*, Paris, PUF, 2005.",
+      "DUPONT 2000, p. 1.",
+      "DUPONT 2005, p. 2.",
+    ],
+  },
+  {
     // Suffixes follow bibliography order (same author and year → by title): "Autre…" < "Éléments…".
     name: "Désambiguïsation par l’année (1901a, 1901b)",
     items: [guadet, { ...guadet, id: "guadet2", title: "Autre titre" }],
@@ -619,6 +698,17 @@ const joubert2008: Item = {
 };
 
 export const bibliographies: { name: string; items: Item[]; expected: string[] }[] = [
+  {
+    name: "Site web sans auteur classé au nom du site",
+    items: [byId("neraudau"), {
+      id: "louvre", type: "webpage", "container-title": "Musée du Louvre", title: "Pietà",
+      URL: "https://collections.louvre.fr/", accessed: d(2024, 3, 1),
+    }],
+    expected: [
+      "Musée du Louvre, *Pietà* [en ligne], https://collections.louvre.fr/ (consulté le 1er mars 2024).",
+      "NÉRAUDAU Jean-Pierre, *Dictionnaire d’histoire de l’art*, Paris, PUF (coll. « Quadrige », n° 215), 1996.",
+    ],
+  },
   {
     // The guide prints *Id.* in italics; CSL 1.0.2 cannot format the substitute string.
     name: "Id. pour un même auteur, ordre chronologique",

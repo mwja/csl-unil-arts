@@ -33,7 +33,7 @@ Fields Zotero lacks go on their own lines at the top of **Extra** (`Key: value`)
 
 | Case | Item type | What to enter |
 |---|---|---|
-| Exhibition catalogue | Book | Extra: `Genre: cat. exp.` and optionally `Event Place: Karlsruhe, ZKM` and `Event Date: 2002-05-04/2002-09-01` (any one of these makes it a catalogue) |
+| Exhibition catalogue | Book | Extra: `Genre: cat. exp.` and/or `Event Date: 2002-05-04/2002-09-01` (either makes it a catalogue); add `Event Place: Karlsruhe, ZKM` for the venue, printed only with an Event Date |
 | Original edition date `[1989]` | Book | Extra: `Original Date: 1989` (range: `1863/1872`) |
 | Forthcoming (`à paraître`) | any | Extra: `Status: forthcoming` (date optional → `à paraître en 2014`) |
 | Thesis / mémoire | Thesis | Type: `thèse de doctorat inédite` / `mémoire de master inédit`; University |
@@ -41,7 +41,7 @@ Fields Zotero lacks go on their own lines at the top of **Extra** (`Key: value`)
 | Lexicon entry (`t. VIII`) | Encyclopedia Article | Volume: `VIII`; institutional editor as a single-field name |
 | Online encyclopedia | Encyclopedia Article + URL | Extra: `ISSN: 2677-6588`; Date = date it went online |
 | Web page shelfmark | Web Page | Extra: `Call Number: BnF NAL 1203` |
-| Archives | Manuscript | Place, Archive, Loc. in Archive, Pages |
+| Archives | Manuscript (or Letter) | Place, Archive, Loc. in Archive; pages in Extra: `Page: 57-78` (Manuscript has no Pages field) |
 | TV / radio | TV or Radio Broadcast | Program Title, Running Time (`11 min.`), Network |
 | Film / VHS | Video Recording | Director, Format (`vidéocassette VHS`), Running Time, Place, Studio |
 | Several places/publishers | any | type them as `Lyon/Dijon` and `PUL/Les Presses du réel` |
@@ -82,11 +82,18 @@ distribution builds of Node are compiled without TypeScript support, hence `tsx`
 
 ## Known limitations
 
-- `Id.` compares the *rendered* names, so two different teams of three or more authors sharing a
-  first author (`JOUBERT Fabienne *et al.*`) collapse into `Id.`. Check those by hand.
+- `Id.` compares the *rendered* names, and *et al.* is not a name. So a team of three or more
+  (`JOUBERT Fabienne *et al.*`) collapses into `Id.` after a work by JOUBERT Fabienne alone, or
+  after another team with the same first author. Check those entries by hand.
+- Up to Zotero schema v39 (Zotero 7.0), Zotero exports the publication Place as the event place
+  too. The style therefore never uses Event Place alone to detect a catalogue or a conference,
+  and prints it only together with an Event Date.
 - An encyclopedia entry is formatted as online (`[en ligne]`, URL) when it has a URL and **no
   volume or page**; a printed lexicon with a URL keeps the print layout.
 - Two different authors with the same surname and year get their first name in short notes
-  (`DUPONT Jean 2000`, `DUPONT Marie 2000`) rather than `2000a`/`2000b`.
+  (`DUPONT Jean 2000`, `DUPONT Marie 2000`) rather than `2000a`/`2000b`; with different years
+  the short form stays `DUPONT 2000`.
+- Several undated or forthcoming works by one author are told apart with a letter:
+  `DUPONT s. d. a`, `KAENEL à paraître b`.
 - Artworks (Zotero Artwork) follow the caption rule of p. 18: artist, title, date, technique
   (Medium), dimensions (Artwork Size), city (Extra `Archive Place: Paris`), Archive.
