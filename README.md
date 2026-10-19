@@ -11,8 +11,11 @@ février 2025, p. 11–18.
 | `universite-de-lausanne-histoire-de-l-art.csl` | 1st time: full reference. After: `GUADET 1901, p. 40.` | Some cited works are **not** in your bibliography |
 | `universite-de-lausanne-histoire-de-l-art-notes-abregees.csl` | Always `GUADET 1901, p. 40.` | Everything you cite is in your bibliography (the guide's normal case, p. 18) |
 
-Both give the same bibliography, and both work for footnotes and endnotes (you choose those in
-Word / LibreOffice, not in the style).
+The two files only differ in the **notes**; the **bibliography is identical**. So "Create
+Bibliography from Items" looks the same with either, unless you set its Output Mode to **Notes**.
+Outside Word, Zotero doesn't know which note comes first, so every citation counts as a first
+one: the main style then always gives the full reference, notes abrégées always the short one.
+Both work for footnotes and endnotes (you choose those in Word / LibreOffice, not in the style).
 
 **Install:** double-click the `.csl` file, or Zotero → Settings → Cite → **+**.
 You can switch a document between the two at any time (Zotero → Document Preferences in Word).
