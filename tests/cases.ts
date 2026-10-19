@@ -811,6 +811,28 @@ export const notes: {
   },
 ];
 
+// Variant "notes abrégées": every note is short, as the guide's p. 18 examples (WERKNER, Notice)
+// for works listed in the bibliography.
+export const shortNotes: typeof notes = [
+  {
+    name: "Notes abrégées dès la première note",
+    items: [werkner, notice, guadet],
+    seq: [[{ id: "werkner", locator: "56 et 137" }], [{ id: "notice", locator: "10" }], [{ id: "guadet" }], [{ id: "guadet", locator: "40" }]],
+    expected: [
+      "WERKNER 1994, p. 56 et 137.",
+      "*Notice historique sur la gymnastique à Genève : centenaire de l’Association genevoise de gymnastique, 1873-1973*, 1973, p. 10.",
+      "GUADET 1901.",
+      "GUADET 1901, p. 40.",
+    ],
+  },
+  {
+    name: "Notes abrégées : chapitre, plusieurs références",
+    items: [byId("wirth"), byId("faure")],
+    seq: [[{ id: "wirth", locator: "330" }, { id: "faure", locator: "5" }]],
+    expected: ["WIRTH 2005, p. 330 ; FAURE 1972, p. 5."],
+  },
+];
+
 const joubert2000: Item = {
   id: "joubert2000", type: "book", author: [n("Joubert", "Fabienne")], title: "La Tapisserie au Moyen Âge",
   "publisher-place": "Rennes", publisher: "Éd. Ouest-France", issued: y(2000),

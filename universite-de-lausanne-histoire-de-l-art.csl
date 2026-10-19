@@ -778,45 +778,48 @@
       <text macro="year-short"/>
     </group>
   </macro>
+  <!-- Short note: GUADET 1901, p. 40 / Titre, 1973, p. 10 -->
+  <macro name="short-note">
+    <group delimiter=", ">
+      <choose>
+        <if type="chapter paper-conference entry-dictionary entry-encyclopedia article-journal article-magazine article-newspaper" match="any">
+          <choose>
+            <if variable="author">
+              <text macro="short-name-year"/>
+            </if>
+            <else>
+              <text macro="title-short"/>
+              <text macro="year-short"/>
+            </else>
+          </choose>
+        </if>
+        <else-if type="webpage post post-weblog" match="any">
+          <text macro="author-short"/>
+          <text macro="title-short"/>
+          <group>
+            <date variable="issued">
+              <date-part name="year"/>
+            </date>
+            <text variable="year-suffix"/>
+          </group>
+        </else-if>
+        <else-if variable="author director composer host editor" match="any">
+          <text macro="short-name-year"/>
+        </else-if>
+        <else>
+          <text macro="title-short"/>
+          <text macro="year-short"/>
+        </else>
+      </choose>
+      <text macro="locator"/>
+    </group>
+  </macro>
   <!-- ===================== Notes ===================== -->
   <citation et-al-min="3" et-al-use-first="1" disambiguate-add-givenname="true" givenname-disambiguation-rule="by-cite" disambiguate-add-year-suffix="true">
     <layout suffix="." delimiter="&#160;; ">
       <choose>
         <if position="subsequent">
-          <!-- GUADET 1901, p. 40 / Titre, 1973, p. 10 -->
-          <group delimiter=", ">
-            <choose>
-              <if type="chapter paper-conference entry-dictionary entry-encyclopedia article-journal article-magazine article-newspaper" match="any">
-                <choose>
-                  <if variable="author">
-                    <text macro="short-name-year"/>
-                  </if>
-                  <else>
-                    <text macro="title-short"/>
-                    <text macro="year-short"/>
-                  </else>
-                </choose>
-              </if>
-              <else-if type="webpage post post-weblog" match="any">
-                <text macro="author-short"/>
-                <text macro="title-short"/>
-                <group>
-                  <date variable="issued">
-                    <date-part name="year"/>
-                  </date>
-                  <text variable="year-suffix"/>
-                </group>
-              </else-if>
-              <else-if variable="author director composer editor" match="any">
-                <text macro="short-name-year"/>
-              </else-if>
-              <else>
-                <text macro="title-short"/>
-                <text macro="year-short"/>
-              </else>
-            </choose>
-            <text macro="locator"/>
-          </group>
+          <text macro="short-note"/>
         </if>
         <else>
           <group delimiter=", ">

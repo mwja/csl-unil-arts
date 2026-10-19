@@ -4,6 +4,9 @@ Zotero citation style for the Section d'histoire de l'art, Université de Lausan
 [*Guide du proséminaire (GPS)*](https://www.unil.ch/files/live/sites/lettres/files/04-domaines/hart/05-vie-etudiante/Guide%20du%20pros%c3%a9mianire%20(GPS)_f%c3%a9vrier%202025.pdf), février 2025, p. 11–18.
 
 - `universite-de-lausanne-histoire-de-l-art.csl`: the style (note style, validated against the CSL 1.0.2 schema)
+- `universite-de-lausanne-histoire-de-l-art-notes-abregees.csl`: the same style, but every note is
+  short (`NOM année, p.`) from the first one, as the guide asks for works listed in the
+  bibliography (p. 18). Generated from the main style: edit the main file, then `npm run build`.
 - `tests/`: citeproc-js test suite built from every example in the guide
 - `zotero/mark-exhibition-catalogues.js`: helper that turns catalogue tags into something the style can see
 
@@ -79,8 +82,9 @@ distribution builds of Node are compiled without TypeScript support, hence `tsx`
 - Online dates use a 4-digit year (`mis en ligne le 22/06/2020`, guide: `22/06/20`), so year-only
   dates stay readable (`mis en ligne 2020`).
 - `Id.` is roman; the guide prints it in italics, which CSL cannot do for the substitute text.
-- Footnotes always start with the full reference; the guide allows the short form from the first
-  note for items listed in the bibliography, which a style cannot detect.
+- The main style starts each work's notes with the full reference (right for works *not* in the
+  bibliography); use the « notes abrégées » variant when everything cited is in the bibliography.
+  Both work for footnotes and endnotes (chosen in the word processor).
 
 ## Known limitations
 

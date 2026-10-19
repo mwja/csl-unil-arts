@@ -7,20 +7,22 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import CSL from "citeproc";
-import { cases, notes, bibliographies, type Item } from "./cases.ts";
+import { cases, notes, bibliographies, shortNotes, type Item } from "./cases.ts";
+import { buildVariant, variantPath } from "../scripts/build-notes-abregees.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const style = readFileSync(join(root, "universite-de-lausanne-histoire-de-l-art.csl"), "utf8");
+const variant = buildVariant(style);
 const locale = readFileSync(join(root, "locales", "locales-fr-FR.xml"), "utf8");
 const filter = process.argv[2];
 
-function makeEngine(items: Item[]) {
+function makeEngine(items: Item[], cslStyle = style) {
   const byId = new Map(items.map((it) => [it.id, it]));
   const sys = {
     retrieveLocale: () => locale,
     retrieveItem: (id: string) => byId.get(id),
   };
-  const engine = new CSL.Engine(sys, style, "fr-FR");
+  const engine = new CSL.Engine(sys, cslStyle, "fr-FR");
   engine.opt.development_extensions.parse_names = false; // as Zotero sets it (xpcom/style.js)
   engine.setOutputFormat("html");
   return engine;
@@ -63,8 +65,8 @@ function bibliography(items: Item[], keepNbsp = false): string[] {
 
 // Render a sequence of footnotes; each note is a list of cites. Like a word processor,
 // earlier notes are updated when a later cite changes them (e.g. year-suffix disambiguation).
-function renderNotes(items: Item[], seq: { id: string; locator?: string; label?: string }[][]): string[] {
-  const engine = makeEngine(items);
+function renderNotes(items: Item[], seq: { id: string; locator?: string; label?: string }[][], cslStyle = style): string[] {
+  const engine = makeEngine(items, cslStyle);
   const out: string[] = [];
   const pre: [string, number][] = [];
   seq.forEach((cites, i) => {
@@ -89,6 +91,17 @@ for (const c of cases) {
 console.log("\nFootnotes");
 for (const n of notes) {
   const out = renderNotes(n.items, n.seq);
+  n.expected.forEach((exp, i) => check(`${n.name} [note ${i + 1}]`, out[i], exp));
+}
+
+console.log("\nVariant « notes abrégées »");
+{
+  let onDisk = "";
+  try { onDisk = readFileSync(variantPath, "utf8"); } catch {}
+  check("variant file is up to date (npm run build)", String(onDisk === variant), "true");
+}
+for (const n of shortNotes) {
+  const out = renderNotes(n.items, n.seq, variant);
   n.expected.forEach((exp, i) => check(`${n.name} [note ${i + 1}]`, out[i], exp));
 }
 
