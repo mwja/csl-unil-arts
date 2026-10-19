@@ -74,3 +74,16 @@ distribution builds of Node are compiled without TypeScript support, hence `tsx`
 - `à paraître en 2014` is separated by a comma instead of the guide's `(à paraître en 2014)`.
 - In notes, a cited page replaces the article/chapter page range.
 - Type `56 et 137`, not `56 et p. 137` (citeproc removes the repeated `p.`).
+- Online dates use a 4-digit year (`mis en ligne le 22/06/2020`, guide: `22/06/20`), so year-only
+  dates stay readable (`mis en ligne 2020`).
+- `Id.` is roman; the guide prints it in italics, which CSL cannot do for the substitute text.
+- Footnotes always start with the full reference; the guide allows the short form from the first
+  note for items listed in the bibliography, which a style cannot detect.
+
+## Known limitations
+
+- `Id.` compares the *rendered* names, so two different teams of three or more authors sharing a
+  first author (`JOUBERT Fabienne *et al.*`) collapse into `Id.`. Check those by hand.
+- An encyclopedia entry is formatted as online only when it has a URL **and** no publisher.
+- Artworks (Zotero Artwork) follow the caption rule of p. 18: artist, title, date, technique
+  (Medium), dimensions (Artwork Size), city (Extra `Archive Place: Paris`), Archive.

@@ -347,13 +347,76 @@ export const cases: { name: string; item: Item; bib: string }[] = [
     bib: "BIBLIOTHÈQUE NATIONALE DE FRANCE, bibliothèque numérique Gallica, *Évangéliaire dit de Charlemagne ou de Godescalc* [en ligne], (BnF NAL 1203), https://gallica.bnf.fr/ark:/12148/btv1b6000718s (consulté le 1er décembre 2015).",
   },
   {
+    // Guide prints "22/06/20"; a 4-digit year is used so year-only dates stay unambiguous.
+    // ISSN typed with a hyphen as Zotero stores it (the guide prints an en dash).
     name: "Article d’encyclopédie en ligne",
     item: {
       id: "koering", type: "entry-encyclopedia", author: [n("Koering", "Jérémie")], title: "Maniérisme",
-      "container-title": "Encyclopédie d’histoire numérique de l’Europe", ISSN: "2677–6588",
+      "container-title": "Encyclopédie d’histoire numérique de l’Europe", ISSN: "2677-6588",
       issued: d(2020, 6, 22), URL: "https://ehne.fr/fr/node/12388", accessed: d(2024, 9, 17),
     },
-    bib: "KOERING Jérémie, « Maniérisme », *Encyclopédie d’histoire numérique de l’Europe* [en ligne], (ISSN 2677–6588), mis en ligne le 22/06/20, https://ehne.fr/fr/node/12388 (consulté le 17 septembre 2024).",
+    bib: "KOERING Jérémie, « Maniérisme », *Encyclopédie d’histoire numérique de l’Europe* [en ligne], (ISSN 2677-6588), mis en ligne le 22/06/2020, https://ehne.fr/fr/node/12388 (consulté le 17 septembre 2024).",
+  },
+  // ---------- Robustness (realistic Zotero data) ----------
+  {
+    name: "Encyclopédie en ligne, date année seule",
+    item: {
+      id: "grove", type: "entry-encyclopedia", author: [n("Kemp", "Martin")], title: "Perspective",
+      "container-title": "Grove Art Online", issued: y(2003),
+      URL: "https://doi.org/10.1093/gao/9781884446054.article.T066593", accessed: d(2024, 1, 2),
+    },
+    bib: "KEMP Martin, « Perspective », *Grove Art Online* [en ligne], mis en ligne 2003, https://doi.org/10.1093/gao/9781884446054.article.T066593 (consulté le 2 janvier 2024).",
+  },
+  {
+    name: "Lexique imprimé avec une URL (reste au format imprimé)",
+    item: {
+      id: "kobler-url", type: "entry-encyclopedia", author: [n("Kobler", "Friedrich")], title: "Fensterrose",
+      "container-title": "Reallexikon zur Deutschen Kunstgeschichte",
+      "publisher-place": "Munich", publisher: "Beck", issued: y(1987), volume: "VIII", page: "46",
+      URL: "https://www.rdklabor.de/wiki/Fensterrose", accessed: d(2024, 1, 2),
+    },
+    bib: "KOBLER Friedrich, « Fensterrose », in : *Reallexikon zur Deutschen Kunstgeschichte*, Munich, Beck, 1987, t. VIII, p. 46.",
+  },
+  {
+    name: "Chapitre avec auteur du livre et directeur·ice",
+    item: {
+      id: "container-author", type: "chapter", author: [n("Dupont", "Anne")], title: "Préface",
+      "container-author": [n("Panofsky", "Erwin")], editor: [n("Borgeaud", "Philippe")],
+      "container-title": "Essais d’iconologie", "publisher-place": "Paris", publisher: "Gallimard", issued: y(1967), page: "7-12",
+    },
+    bib: "DUPONT Anne, « Préface », in : PANOFSKY Erwin, BORGEAUD Philippe (éd.), *Essais d’iconologie*, Paris, Gallimard, 1967, p. 7–12.",
+  },
+  {
+    name: "Collection sans maison d’édition",
+    item: {
+      id: "coll-nopub", type: "book", author: [n("Dupont", "Jean")], title: "Sans éditeur",
+      "publisher-place": "Paris", "collection-title": "Quadrige", "collection-number": "5", issued: y(1999),
+    },
+    bib: "DUPONT Jean, *Sans éditeur*, Paris (coll. « Quadrige », n° 5), 1999.",
+  },
+  {
+    name: "Actes de colloque sans lieu ni date du colloque",
+    item: {
+      id: "proc-bare", type: "paper-conference", author: [n("Michel", "Christian")], title: "Bellori",
+      "container-title": "L’Idéal classique", "publisher-place": "Paris", publisher: "Somogy", issued: y(2002), page: "105-116",
+    },
+    bib: "MICHEL Christian, « Bellori », in : *L’Idéal classique*, actes du colloque, Paris, Somogy, 2002, p. 105–116.",
+  },
+  {
+    name: "Œuvre d’art (Zotero Artwork)",
+    item: {
+      id: "hodler", type: "graphic", author: [n("Hodler", "Ferdinand")], title: "Le Bûcheron", issued: y(1910),
+      medium: "huile sur toile", dimensions: "130 x 101 cm", "archive-place": "Paris", archive: "Musée d’Orsay",
+    },
+    bib: "HODLER Ferdinand, *Le Bûcheron*, 1910, huile sur toile, 130 x 101 cm, Paris, Musée d’Orsay.",
+  },
+  {
+    name: "Enregistrement audio (compositeur·ice)",
+    item: {
+      id: "satie", type: "song", composer: [n("Satie", "Erik")], title: "Gymnopédies",
+      medium: "CD", publisher: "Erato", issued: y(1999),
+    },
+    bib: "SATIE Erik, *Gymnopédies*, CD, Erato, 1999.",
   },
   // ---------- Misc ----------
   {
@@ -401,6 +464,8 @@ export const notes: {
   },
   {
     // Guide: "p. 56 et p. 137". citeproc strips a repeated "p." typed inside the locator.
+    // The guide's note is short from the first occurrence (item in the bibliography); the
+    // style always gives the full form first since it cannot know what the bibliography holds.
     name: "Forme abrégée, plusieurs pages",
     items: [werkner],
     seq: [[{ id: "werkner" }], [{ id: "werkner", locator: "56 et 137" }]],
@@ -441,6 +506,30 @@ export const notes: {
     ],
   },
   {
+    name: "Chapitre anonyme : forme abrégée par le titre, pas par le directeur·ice",
+    items: [{
+      id: "anon-chap", type: "chapter", title: "Chapitre anonyme", editor: [n("Hache", "Gérard")],
+      "container-title": "Un livre", "publisher-place": "Paris", publisher: "PUF", issued: y(2006), page: "1-10",
+    }],
+    seq: [[{ id: "anon-chap", locator: "3" }], [{ id: "anon-chap", locator: "4" }]],
+    expected: [
+      "« Chapitre anonyme », in : HACHE Gérard (éd.), *Un livre*, Paris, PUF, 2006, p. 3.",
+      "« Chapitre anonyme », 2006, p. 4.",
+    ],
+  },
+  {
+    name: "Forme abrégée : titre complet, pas le titre court de Zotero",
+    items: [{
+      id: "mucha-short", type: "book", title: "Alphonse Mucha : maître de l’Art nouveau", "title-short": "Alphonse Mucha",
+      genre: "cat. exp.", "publisher-place": "Vanves", publisher: "Hazan", issued: y(2023),
+    }],
+    seq: [[{ id: "mucha-short" }], [{ id: "mucha-short", locator: "12" }]],
+    expected: [
+      "*Alphonse Mucha : maître de l’Art nouveau*, cat. exp., Vanves, Hazan, 2023.",
+      "*Alphonse Mucha : maître de l’Art nouveau*, 2023, p. 12.",
+    ],
+  },
+  {
     // Suffixes follow bibliography order (same author and year → by title): "Autre…" < "Éléments…".
     name: "Désambiguïsation par l’année (1901a, 1901b)",
     items: [guadet, { ...guadet, id: "guadet2", title: "Autre titre" }],
@@ -475,6 +564,7 @@ const joubert2008: Item = {
 
 export const bibliographies: { name: string; items: Item[]; expected: string[] }[] = [
   {
+    // The guide prints *Id.* in italics; CSL 1.0.2 cannot format the substitute string.
     name: "Id. pour un même auteur, ordre chronologique",
     items: [joubert2008, joubert2000],
     expected: [
@@ -483,9 +573,14 @@ export const bibliographies: { name: string; items: Item[]; expected: string[] }
     ],
   },
   {
+    // Anonymous chapter sorts by its title ("Anonyme…"), not under its book's editor (Zola).
     name: "Ordre alphabétique ; catalogues d’exposition classés par titre",
-    items: [byId("neraudau"), joubert2008, byId("iconoclash-guide"), byId("gisants"), byId("belting"), byId("faure")],
+    items: [{
+      id: "anon-sort", type: "chapter", title: "Anonyme sous la direction d’un tiers", editor: [n("Zola", "Émile")],
+      "container-title": "Recueil", "publisher-place": "Paris", publisher: "PUF", issued: y(2000), page: "1-2",
+    }, byId("neraudau"), joubert2008, byId("iconoclash-guide"), byId("gisants"), byId("belting"), byId("faure")],
     expected: [
+      "« Anonyme sous la direction d’un tiers », in : ZOLA Émile (éd.), *Recueil*, Paris, PUF, 2000, p. 1–2.",
       "BELTING Hans, *La double perspective : la science arabe et l’art de la Renaissance*, Lyon/Dijon, PUL/Les Presses du réel, 2010.",
       "FAURE Élie, *Histoire de l’art*, Paris, J.-J. Pauvert, 1972, 2 vol.",
       "*Gisants et tombeaux de la Basilique de Saint-Denis*, cat. exp., Paris, Archives départementales de la Seine–Saint-Denis, 1976.",
