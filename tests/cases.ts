@@ -359,10 +359,11 @@ export const cases: { name: string; item: Item; bib: string }[] = [
   },
   // ---------- Robustness (realistic Zotero data) ----------
   {
+    // Online = URL and no volume/page; Zotero fills a publisher for Grove, so that is not a usable test.
     name: "Encyclopédie en ligne, date année seule",
     item: {
       id: "grove", type: "entry-encyclopedia", author: [n("Kemp", "Martin")], title: "Perspective",
-      "container-title": "Grove Art Online", issued: y(2003),
+      "container-title": "Grove Art Online", publisher: "Oxford University Press", issued: y(2003),
       URL: "https://doi.org/10.1093/gao/9781884446054.article.T066593", accessed: d(2024, 1, 2),
     },
     bib: "KEMP Martin, « Perspective », *Grove Art Online* [en ligne], mis en ligne 2003, https://doi.org/10.1093/gao/9781884446054.article.T066593 (consulté le 2 janvier 2024).",
@@ -401,6 +402,27 @@ export const cases: { name: string; item: Item; bib: string }[] = [
       "container-title": "L’Idéal classique", "publisher-place": "Paris", publisher: "Somogy", issued: y(2002), page: "105-116",
     },
     bib: "MICHEL Christian, « Bellori », in : *L’Idéal classique*, actes du colloque, Paris, Somogy, 2002, p. 105–116.",
+  },
+  {
+    name: "Traduction d’un article de revue",
+    item: {
+      id: "art-trad", type: "article-journal", author: [n("Warburg", "Aby")], title: "L’art du portrait",
+      translator: [n("Rochlitz", "Sibylle")], "container-title": "Revue germanique", volume: "12",
+      issued: y(1990), page: "5-30",
+    },
+    bib: "WARBURG Aby, « L’art du portrait », trad. S. Rochlitz, in : *Revue germanique*, vol. 12, 1990, p. 5–30.",
+  },
+  {
+    // Guide p. 12 prints this one as "…, 18 juin 1743, Jur. Civ. F15, Genève, Archives d’État",
+    // but the Testament example (p. 13) and the rule put place and archive before the shelfmark.
+    // Both cannot be produced from the same Zotero fields; the style follows the rule.
+    name: "Source non publiée (ordre de la règle, pas de l’exemple Inventaire)",
+    item: {
+      id: "arlaud-inventaire", type: "manuscript",
+      title: "Inventaire après décès de Jacques-Antoine Arlaud", issued: d(1743, 6, 18),
+      "publisher-place": "Genève", archive: "Archives d’État", archive_location: "Jur. Civ. F15",
+    },
+    bib: "*Inventaire après décès de Jacques-Antoine Arlaud*, 18 juin 1743, Genève, Archives d’État, Jur. Civ. F15.",
   },
   {
     name: "Œuvre d’art (Zotero Artwork)",
@@ -454,6 +476,8 @@ export const notes: {
   expected: string[];
 }[] = [
   {
+    // The guide's note has "t. 2." after the title, while its rule (p. 13) puts "vol." after the
+    // publisher; the volume is left out here and covered by the "Volume consulté" case.
     name: "Première occurrence complète, puis forme abrégée",
     items: [guadet],
     seq: [[{ id: "guadet", locator: "499" }], [{ id: "guadet", locator: "40" }]],
@@ -527,6 +551,38 @@ export const notes: {
     expected: [
       "*Alphonse Mucha : maître de l’Art nouveau*, cat. exp., Vanves, Hazan, 2023.",
       "*Alphonse Mucha : maître de l’Art nouveau*, 2023, p. 12.",
+    ],
+  },
+  {
+    name: "Encyclopédie en ligne : page citée dans la première note",
+    items: [byId("koering")],
+    seq: [[{ id: "koering", locator: "3" }], [{ id: "koering", locator: "4" }]],
+    expected: [
+      "KOERING Jérémie, « Maniérisme », *Encyclopédie d’histoire numérique de l’Europe* [en ligne], (ISSN 2677-6588), mis en ligne le 22/06/2020, https://ehne.fr/fr/node/12388 (consulté le 17 septembre 2024), p. 3.",
+      "KOERING 2020, p. 4.",
+    ],
+  },
+  {
+    name: "Site web : forme abrégée par auteur et titre",
+    items: [byId("gallica")],
+    seq: [[{ id: "gallica" }], [{ id: "gallica" }]],
+    expected: [
+      "BIBLIOTHÈQUE NATIONALE DE FRANCE, bibliothèque numérique Gallica, *Évangéliaire dit de Charlemagne ou de Godescalc* [en ligne], (BnF NAL 1203), https://gallica.bnf.fr/ark:/12148/btv1b6000718s (consulté le 1er décembre 2015).",
+      "BIBLIOTHÈQUE NATIONALE DE FRANCE, *Évangéliaire dit de Charlemagne ou de Godescalc*.",
+    ],
+  },
+  {
+    name: "Même nom, même année, personnes différentes : prénom plutôt que suffixe",
+    items: [
+      { id: "dupont-j", type: "book", author: [n("Dupont", "Jean")], title: "Un", "publisher-place": "Paris", publisher: "PUF", issued: y(2000) },
+      { id: "dupont-m", type: "book", author: [n("Dupont", "Marie")], title: "Deux", "publisher-place": "Paris", publisher: "PUF", issued: y(2000) },
+    ],
+    seq: [[{ id: "dupont-j" }], [{ id: "dupont-m" }], [{ id: "dupont-j", locator: "1" }], [{ id: "dupont-m", locator: "2" }]],
+    expected: [
+      "DUPONT Jean, *Un*, Paris, PUF, 2000.",
+      "DUPONT Marie, *Deux*, Paris, PUF, 2000.",
+      "DUPONT Jean 2000, p. 1.",
+      "DUPONT Marie 2000, p. 2.",
     ],
   },
   {

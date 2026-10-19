@@ -84,6 +84,9 @@ distribution builds of Node are compiled without TypeScript support, hence `tsx`
 
 - `Id.` compares the *rendered* names, so two different teams of three or more authors sharing a
   first author (`JOUBERT Fabienne *et al.*`) collapse into `Id.`. Check those by hand.
-- An encyclopedia entry is formatted as online only when it has a URL **and** no publisher.
+- An encyclopedia entry is formatted as online (`[en ligne]`, URL) when it has a URL and **no
+  volume or page**; a printed lexicon with a URL keeps the print layout.
+- Two different authors with the same surname and year get their first name in short notes
+  (`DUPONT Jean 2000`, `DUPONT Marie 2000`) rather than `2000a`/`2000b`.
 - Artworks (Zotero Artwork) follow the caption rule of p. 18: artist, title, date, technique
   (Medium), dimensions (Artwork Size), city (Extra `Archive Place: Paris`), Archive.

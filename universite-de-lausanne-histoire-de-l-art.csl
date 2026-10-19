@@ -110,7 +110,7 @@
     <choose>
       <if type="chapter paper-conference entry-dictionary entry-encyclopedia article-journal article-magazine article-newspaper" match="any">
         <names variable="author">
-          <name form="short" and="text" delimiter=", " delimiter-precedes-last="never" et-al-min="3" et-al-use-first="1">
+          <name form="short" and="text" delimiter=", " delimiter-precedes-last="never" et-al-min="3" et-al-use-first="1" name-as-sort-order="all" sort-separator=" ">
             <name-part name="family" text-case="uppercase"/>
           </name>
           <et-al font-style="italic"/>
@@ -118,7 +118,7 @@
       </if>
       <else>
         <names variable="author">
-          <name form="short" and="text" delimiter=", " delimiter-precedes-last="never" et-al-min="3" et-al-use-first="1">
+          <name form="short" and="text" delimiter=", " delimiter-precedes-last="never" et-al-min="3" et-al-use-first="1" name-as-sort-order="all" sort-separator=" ">
             <name-part name="family" text-case="uppercase"/>
           </name>
           <et-al font-style="italic"/>
@@ -429,6 +429,7 @@
         <group delimiter=", ">
           <text macro="author"/>
           <text macro="title"/>
+          <text macro="secondary-contributors"/>
           <group delimiter=" ">
             <text term="in"/>
             <text variable="container-title" font-style="italic"/>
@@ -457,20 +458,19 @@
           <text macro="issued-full"/>
         </group>
       </else-if>
-      <!-- Article d'encyclopédie en ligne (URL and no publisher) -->
-      <else-if type="entry-dictionary entry-encyclopedia" variable="URL" match="all">
+      <!-- Article d'encyclopédie en ligne (URL, no volume or page) / article publié dans un lexique -->
+      <else-if type="entry-dictionary entry-encyclopedia" match="any">
         <choose>
-          <if variable="publisher">
+          <if variable="volume page" match="any">
             <text macro="entry-print"/>
           </if>
-          <else>
+          <else-if variable="URL">
             <text macro="entry-online"/>
+          </else-if>
+          <else>
+            <text macro="entry-print"/>
           </else>
         </choose>
-      </else-if>
-      <!-- Article publié dans un lexique -->
-      <else-if type="entry-dictionary entry-encyclopedia" match="any">
-        <text macro="entry-print"/>
       </else-if>
       <!-- Article dans un ouvrage collectif / actes de colloque -->
       <else-if type="chapter paper-conference" match="any">
@@ -622,22 +622,9 @@
   <!-- Pages belong to the reference itself for articles/chapters; elsewhere only the cited locator -->
   <macro name="reference-pages">
     <choose>
-      <if type="article-journal article-magazine article-newspaper chapter paper-conference" match="any">
+      <if type="article-journal article-magazine article-newspaper chapter paper-conference manuscript entry-dictionary entry-encyclopedia" match="any">
         <text macro="pages-or-locator"/>
       </if>
-      <else-if type="manuscript entry-dictionary entry-encyclopedia" match="any">
-        <choose>
-          <if type="manuscript">
-            <text macro="pages-or-locator"/>
-          </if>
-          <else-if variable="publisher">
-            <text macro="pages-or-locator"/>
-          </else-if>
-          <else-if variable="URL" match="none">
-            <text macro="pages-or-locator"/>
-          </else-if>
-        </choose>
-      </else-if>
       <else>
         <text macro="locator"/>
       </else>
@@ -645,19 +632,9 @@
   </macro>
   <macro name="reference-pages-bib">
     <choose>
-      <if type="article-journal article-magazine article-newspaper chapter paper-conference manuscript" match="any">
+      <if type="article-journal article-magazine article-newspaper chapter paper-conference manuscript entry-dictionary entry-encyclopedia" match="any">
         <text macro="pages"/>
       </if>
-      <else-if type="entry-dictionary entry-encyclopedia" match="any">
-        <choose>
-          <if variable="publisher">
-            <text macro="pages"/>
-          </if>
-          <else-if variable="URL" match="none">
-            <text macro="pages"/>
-          </else-if>
-        </choose>
-      </else-if>
     </choose>
   </macro>
   <macro name="short-name-year">
@@ -667,7 +644,7 @@
     </group>
   </macro>
   <!-- ===================== Notes ===================== -->
-  <citation et-al-min="3" et-al-use-first="1" disambiguate-add-year-suffix="true">
+  <citation et-al-min="3" et-al-use-first="1" disambiguate-add-givenname="true" givenname-disambiguation-rule="primary-name" disambiguate-add-year-suffix="true">
     <layout suffix="." delimiter="&#160;; ">
       <choose>
         <if position="subsequent">
@@ -685,6 +662,13 @@
                   </else>
                 </choose>
               </if>
+              <else-if type="webpage post post-weblog" match="any">
+                <text macro="author-short"/>
+                <text macro="title-short"/>
+                <date variable="issued">
+                  <date-part name="year"/>
+                </date>
+              </else-if>
               <else-if variable="author director composer editor" match="any">
                 <text macro="short-name-year"/>
               </else-if>
