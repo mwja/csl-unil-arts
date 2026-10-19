@@ -96,7 +96,8 @@
       <choose>
         <if variable="author">
           <choose>
-            <if type="chapter paper-conference entry-dictionary entry-encyclopedia" match="none">
+            <!-- For parts of a whole the editor belongs to the container (after « in : ») -->
+            <if type="chapter paper-conference entry-dictionary entry-encyclopedia article-journal article-magazine article-newspaper" match="none">
               <names variable="editor">
                 <label form="short" suffix=" "/>
                 <name and="text" delimiter=", " delimiter-precedes-last="never" et-al-min="3" et-al-use-first="1" initialize-with=". "/>
@@ -348,6 +349,18 @@
       </else>
     </choose>
   </macro>
+  <!-- Zotero (schema 2026+) exports Place of recordings, presentations and artworks as event-place
+       only; older versions export it as both variables with the same value -->
+  <macro name="place-any">
+    <choose>
+      <if variable="publisher-place">
+        <text variable="publisher-place"/>
+      </if>
+      <else>
+        <text variable="event-place"/>
+      </else>
+    </choose>
+  </macro>
   <macro name="volume">
     <group delimiter="&#160;">
       <label variable="volume" form="short"/>
@@ -490,6 +503,7 @@
     <group delimiter=", ">
       <text macro="author"/>
       <text macro="title"/>
+      <text macro="secondary-contributors"/>
       <group delimiter=" ">
         <text term="in"/>
         <text variable="container-title" font-style="italic"/>
@@ -530,6 +544,7 @@
         <group delimiter=", ">
           <text macro="author"/>
           <text macro="title"/>
+          <text macro="secondary-contributors"/>
           <group delimiter=" ">
             <text term="in"/>
             <text variable="container-title" font-style="italic"/>
@@ -641,7 +656,8 @@
           <text macro="title"/>
           <text variable="medium"/>
           <text variable="dimensions"/>
-          <text macro="publisher"/>
+          <text macro="place-any"/>
+          <text variable="publisher"/>
           <text macro="issued-year"/>
         </group>
       </else-if>
@@ -658,7 +674,7 @@
               <text variable="archive-place"/>
             </if>
             <else>
-              <text variable="publisher-place"/>
+              <text macro="place-any"/>
             </else>
           </choose>
           <text variable="archive"/>
@@ -777,7 +793,7 @@
   <!-- ===================== Bibliography ===================== -->
   <bibliography subsequent-author-substitute="Id." entry-spacing="0" hanging-indent="false">
     <sort>
-      <key macro="sort-key"/>
+      <key macro="sort-key" names-min="3" names-use-first="1"/>
       <key variable="issued"/>
       <key variable="title"/>
     </sort>

@@ -326,12 +326,12 @@ export const cases: { name: string; item: Item; bib: string }[] = [
   },
   {
     // Guide lists producer and broadcaster separately; Zotero has a single Studio field,
-    // so both go into it as typed.
+    // so both go into it as typed. Current Zotero exports a recording's Place as event-place only.
     name: "Film / vidéocassette (réalisateur·ice)",
     item: {
       id: "pache", type: "motion_picture", director: [n("Pache", "Gilles")],
       title: "La tête buissonnante : Jean-Claude Hesselbarth. Une vie d’artiste",
-      medium: "vidéocassette VHS", dimensions: "44 min.", "publisher-place": "Lausanne",
+      medium: "vidéocassette VHS", dimensions: "44 min.", "event-place": "Lausanne",
       publisher: "Parallaxe Film [producteur], Genève, RSR [diffuseur]", issued: y(1988),
     },
     bib: "PACHE Gilles, *La tête buissonnante : Jean-Claude Hesselbarth. Une vie d’artiste*, vidéocassette VHS, 44 min., Lausanne, Parallaxe Film [producteur], Genève, RSR [diffuseur], 1988.",
@@ -478,6 +478,49 @@ export const cases: { name: string; item: Item; bib: string }[] = [
       "container-title": "Revue de l’art", volume: "12", issue: "Printemps", issued: y(2001), page: "1-9",
     },
     bib: "DUPONT Anne, « Saisons », in : *Revue de l’art*, vol. 12, Printemps, 2001, p. 1–9.",
+  },
+  {
+    name: "Film / vidéocassette, ancien Zotero (lieu exporté deux fois)",
+    item: {
+      id: "pache-old", type: "motion_picture", director: [n("Pache", "Gilles")], title: "La tête buissonnante",
+      medium: "vidéocassette VHS", dimensions: "44 min.", "publisher-place": "Lausanne", "event-place": "Lausanne",
+      publisher: "Parallaxe Film", issued: y(1988),
+    },
+    bib: "PACHE Gilles, *La tête buissonnante*, vidéocassette VHS, 44 min., Lausanne, Parallaxe Film, 1988.",
+  },
+  {
+    name: "Présentation / conférence (Zotero Presentation)",
+    item: {
+      id: "talk", type: "speech", author: [n("Kaenel", "Philippe")], title: "Conférence",
+      "event-place": "Lausanne", "event-title": "Colloque de la Section", issued: y(2019),
+    },
+    bib: "KAENEL Philippe, *Conférence*, Lausanne, 2019.",
+  },
+  {
+    name: "Œuvre d’art, lieu du champ Place de Zotero",
+    item: {
+      id: "hodler-place", type: "graphic", author: [n("Hodler", "Ferdinand")], title: "Le Bûcheron", issued: y(1910),
+      medium: "huile sur toile", dimensions: "130 x 101 cm", "event-place": "Paris", archive: "Musée d’Orsay",
+    },
+    bib: "HODLER Ferdinand, *Le Bûcheron*, 1910, huile sur toile, 130 x 101 cm, Paris, Musée d’Orsay.",
+  },
+  {
+    // The issue editor of a journal is not part of the guide's article form.
+    name: "Article de revue avec éditeur·ice du numéro",
+    item: {
+      id: "art-ed", type: "article-journal", author: [n("Toubert", "Pierre")], title: "Le règne",
+      editor: [n("Dupont", "Marc")], "container-title": "Revue", volume: "89", issued: y(1983), page: "1-2",
+    },
+    bib: "TOUBERT Pierre, « Le règne », in : *Revue*, vol. 89, 1983, p. 1–2.",
+  },
+  {
+    name: "Article de magazine traduit",
+    item: {
+      id: "mag-trad", type: "article-magazine", author: [n("Toubert", "Pierre")], title: "Le règne",
+      translator: [n("Arnal", "Bernard")], "container-title": "Connaissance des arts", issue: "12",
+      issued: d(1983, 5), page: "1-2",
+    },
+    bib: "TOUBERT Pierre, « Le règne », trad. B. Arnal, in : *Connaissance des arts*, n° 12, mai 1983, p. 1–2.",
   },
   // ---------- Zotero 7 (schema <= v39) exports Place as both publisher-place and event-place ----------
   {
@@ -727,6 +770,22 @@ const joubert2008: Item = {
 };
 
 export const bibliographies: { name: string; items: Item[]; expected: string[] }[] = [
+  {
+    // Teams print as "JOUBERT Fabienne et al.", so they sort by date with her other works.
+    // KNOWN LIMITATION (README): the 2001 team should read "JOUBERT Fabienne *et al.*", but
+    // CSL's Id. compares the rendered names. This case guards the chronological order.
+    name: "Groupe Id. en ordre chronologique malgré des coauteurs différents",
+    items: [
+      { id: "j-2002", type: "book", author: [n("Joubert", "Fabienne"), n("Quint", "Q"), n("Sachs", "S")], title: "C", "publisher-place": "Paris", publisher: "Picard", issued: y(2002) },
+      { id: "j-2000", type: "book", author: [n("Joubert", "Fabienne")], title: "A", "publisher-place": "Paris", publisher: "Picard", issued: y(2000) },
+      { id: "j-2001", type: "book", author: [n("Joubert", "Fabienne"), n("Xavier", "X"), n("Zorn", "Z")], title: "B", "publisher-place": "Paris", publisher: "Picard", issued: y(2001) },
+    ],
+    expected: [
+      "JOUBERT Fabienne, *A*, Paris, Picard, 2000.",
+      "Id., *B*, Paris, Picard, 2001.",
+      "Id., *C*, Paris, Picard, 2002.",
+    ],
+  },
   {
     // Guards a citeproc-js quirk: one date macro reached from two branches leaked the "[ ]" of
     // the original date into other date ranges ("4 mai–[1er septembre ]2002").
