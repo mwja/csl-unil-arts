@@ -154,3 +154,10 @@ npm run build     # regenerate the two variants after editing the main style
 Only edit `universite-de-lausanne-histoire-de-l-art.csl`; both variants are generated from it by
 `scripts/build-variants.ts` (the tests fail if you forget `npm run build`). On some Linux Node builds TypeScript isn't built in,
 hence `tsx`.
+
+
+## AI Disclosure
+
+This style guide was made with the assistance of AI, specifically reviewing that the resulting bibiliography is 
+compliant with the GPS and generating a suite of test cases. I am a full-time senior developer by profession and all
+code has been thoroughly reviewed.
