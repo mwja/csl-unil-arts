@@ -57,6 +57,7 @@
           <substitute>
             <names variable="director"/>
             <names variable="composer"/>
+            <names variable="host"/>
             <text macro="editor"/>
           </substitute>
         </names>
@@ -73,22 +74,39 @@
     </names>
   </macro>
   <!-- Directeur·ice·s d'un ouvrage collectif : plus de trois noms, ne mentionner que le premier -->
+  <!-- The book's author if it has one (its editor then follows the title as « éd. X »),
+       otherwise its editors « NOM Prénom (éd.) » -->
   <macro name="container-contributors">
-    <group delimiter=", ">
-      <names variable="container-author">
-        <name and="text" delimiter=", " delimiter-precedes-last="never" et-al-min="4" et-al-use-first="1" name-as-sort-order="all" sort-separator=" ">
-          <name-part name="family" text-case="uppercase"/>
-        </name>
-        <et-al font-style="italic"/>
-      </names>
-      <names variable="editor">
-        <name and="text" delimiter=", " delimiter-precedes-last="never" et-al-min="4" et-al-use-first="1" name-as-sort-order="all" sort-separator=" ">
-          <name-part name="family" text-case="uppercase"/>
-        </name>
-        <et-al font-style="italic"/>
-        <label form="short" prefix=" (" suffix=")"/>
-      </names>
-    </group>
+    <choose>
+      <if variable="container-author">
+        <names variable="container-author">
+          <name and="text" delimiter=", " delimiter-precedes-last="never" et-al-min="4" et-al-use-first="1" name-as-sort-order="all" sort-separator=" ">
+            <name-part name="family" text-case="uppercase"/>
+          </name>
+          <et-al font-style="italic"/>
+        </names>
+      </if>
+      <else>
+        <names variable="editor">
+          <name and="text" delimiter=", " delimiter-precedes-last="never" et-al-min="4" et-al-use-first="1" name-as-sort-order="all" sort-separator=" ">
+            <name-part name="family" text-case="uppercase"/>
+          </name>
+          <et-al font-style="italic"/>
+          <label form="short" prefix=" (" suffix=")"/>
+        </names>
+      </else>
+    </choose>
+  </macro>
+  <macro name="container-editor-after-title">
+    <choose>
+      <if variable="container-author">
+        <names variable="editor">
+          <label form="short" suffix=" "/>
+          <name and="text" delimiter=", " delimiter-precedes-last="never" et-al-min="3" et-al-use-first="1" initialize-with=". "/>
+          <et-al font-style="italic"/>
+        </names>
+      </if>
+    </choose>
   </macro>
   <!-- éd. X / trad. B. Arnal et al., placés après le titre -->
   <macro name="secondary-contributors">
@@ -134,6 +152,7 @@
           <substitute>
             <names variable="director"/>
             <names variable="composer"/>
+            <names variable="host"/>
             <names variable="editor"/>
           </substitute>
         </names>
@@ -156,6 +175,7 @@
           <substitute>
             <names variable="director"/>
             <names variable="composer"/>
+            <names variable="host"/>
             <names variable="editor"/>
             <text variable="title"/>
           </substitute>
@@ -430,8 +450,7 @@
   <macro name="year-short">
     <choose>
       <if variable="status">
-        <text term="forthcoming"/>
-        <text variable="year-suffix" prefix=" "/>
+        <text macro="issued-year"/>
       </if>
       <else-if variable="issued">
         <date variable="issued">
@@ -529,7 +548,12 @@
       <if type="article-journal">
         <group delimiter=", ">
           <text macro="author"/>
-          <text macro="title"/>
+          <group delimiter=" ">
+            <text macro="title"/>
+            <date variable="original-date" prefix="[" suffix="]">
+              <date-part name="year"/>
+            </date>
+          </group>
           <text macro="secondary-contributors"/>
           <group delimiter=" ">
             <text term="in"/>
@@ -572,7 +596,12 @@
       <else-if type="chapter paper-conference" match="any">
         <group delimiter=", ">
           <text macro="author"/>
-          <text macro="title"/>
+          <group delimiter=" ">
+            <text macro="title"/>
+            <date variable="original-date" prefix="[" suffix="]">
+              <date-part name="year"/>
+            </date>
+          </group>
           <group delimiter=" ">
             <text term="in"/>
             <group delimiter=", ">
@@ -580,6 +609,7 @@
               <text variable="container-title" font-style="italic"/>
             </group>
           </group>
+          <text macro="container-editor-after-title"/>
           <text macro="exhibition-essay"/>
           <text macro="secondary-contributors"/>
           <choose>
@@ -630,7 +660,14 @@
               <text variable="publisher-place"/>
             </else>
           </choose>
-          <text variable="archive"/>
+          <choose>
+            <if variable="archive">
+              <text variable="archive"/>
+            </if>
+            <else>
+              <text variable="publisher"/>
+            </else>
+          </choose>
           <text variable="archive_location"/>
         </group>
       </else-if>

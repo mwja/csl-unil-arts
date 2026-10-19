@@ -21,6 +21,7 @@ function makeEngine(items: Item[]) {
     retrieveItem: (id: string) => byId.get(id),
   };
   const engine = new CSL.Engine(sys, style, "fr-FR");
+  engine.opt.development_extensions.parse_names = false; // as Zotero sets it (xpcom/style.js)
   engine.setOutputFormat("html");
   return engine;
 }

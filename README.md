@@ -43,7 +43,7 @@ Fields Zotero lacks go on their own lines at the top of **Extra** (`Key: value`)
 | Lexicon entry (`t. VIII`) | Encyclopedia Article | Volume: `VIII`; institutional editor as a single-field name |
 | Online encyclopedia | Encyclopedia Article + URL | Extra: `ISSN: 2677-6588`; Date = date it went online |
 | Web page shelfmark | Web Page | Extra: `Call Number: BnF NAL 1203` |
-| Archives | Manuscript (or Letter) | Place, Archive, Loc. in Archive; pages in Extra: `Page: 57-78` (Manuscript has no Pages field) |
+| Archives | Manuscript (or Letter) | Place, Archive (or Institution), Loc. in Archive; pages in Extra: `Page: 57-78` (Manuscript has no Pages field) |
 | TV / radio | TV or Radio Broadcast | Program Title, Running Time (`11 min.`), Network |
 | Film / VHS | Video Recording | Director, Format (`vidéocassette VHS`), Running Time, Place, Studio |
 | Several places/publishers | any | type them as `Lyon/Dijon` and `PUL/Les Presses du réel` |
@@ -90,8 +90,9 @@ distribution builds of Node are compiled without TypeScript support, hence `tsx`
 - Zotero versions whose data schema predates January 2026 also export the publication Place as
   the event place (`zotero-schema` commit 7c592c8 separated them). The style therefore never uses
   Event Place alone to detect a catalogue or a conference, and prints it only together with an
-  Event Date. On those older versions, **always add `Event Place:` when you add `Event Date:`**,
-  otherwise the publication place is printed as the exhibition venue.
+  Event Date. On those older versions an Extra `Event Place:` line is ignored (citeproc only reads
+  Extra for variables that are still empty), so do not use `Event Date:` there; type venue and
+  dates into the genre instead: `Genre: cat. exp., Karlsruhe, ZKM, 4 mai–1er septembre 2002`.
 - An encyclopedia entry is formatted as online (`[en ligne]`, URL) when it has a URL and **no
   volume or page**; a printed lexicon with a URL keeps the print layout.
 - Two different authors with the same surname and year get their first name in short notes

@@ -382,13 +382,15 @@ export const cases: { name: string; item: Item; bib: string }[] = [
     bib: "KOBLER Friedrich, « Fensterrose », in : *Reallexikon zur Deutschen Kunstgeschichte*, Munich, Beck, 1987, t. VIII, p. 46.",
   },
   {
+    // Not in the guide: the book's author goes after « in : », its editor after the title
+    // (as for lexicons, p. 15), so the two are not read as co-editors.
     name: "Chapitre avec auteur du livre et directeur·ice",
     item: {
       id: "container-author", type: "chapter", author: [n("Dupont", "Anne")], title: "Préface",
       "container-author": [n("Panofsky", "Erwin")], editor: [n("Borgeaud", "Philippe")],
       "container-title": "Essais d’iconologie", "publisher-place": "Paris", publisher: "Gallimard", issued: y(1967), page: "7-12",
     },
-    bib: "DUPONT Anne, « Préface », in : PANOFSKY Erwin, BORGEAUD Philippe (éd.), *Essais d’iconologie*, Paris, Gallimard, 1967, p. 7–12.",
+    bib: "DUPONT Anne, « Préface », in : PANOFSKY Erwin, *Essais d’iconologie*, éd. P. Borgeaud, Paris, Gallimard, 1967, p. 7–12.",
   },
   {
     name: "Collection sans maison d’édition",
@@ -521,6 +523,42 @@ export const cases: { name: string; item: Item; bib: string }[] = [
       issued: d(1983, 5), page: "1-2",
     },
     bib: "TOUBERT Pierre, « Le règne », trad. B. Arnal, in : *Connaissance des arts*, n° 12, mai 1983, p. 1–2.",
+  },
+  {
+    name: "Source non publiée, champ Institution de Zotero (sans Archive)",
+    item: {
+      id: "arlaud-inst", type: "manuscript", title: "Testament olographe de Jacques-Antoine Arlaud",
+      issued: d(1740, 4, 6), "publisher-place": "Genève", publisher: "Archives d’État", archive_location: "Jur. Civ. E, n° 13",
+    },
+    bib: "*Testament olographe de Jacques-Antoine Arlaud*, 6 avril 1740, Genève, Archives d’État, Jur. Civ. E, n° 13.",
+  },
+  {
+    name: "Chapitre avec date originale",
+    item: {
+      id: "benjamin", type: "chapter", author: [n("Benjamin", "Walter")], title: "L’œuvre d’art à l’époque de sa reproduction mécanisée",
+      "original-date": y(1936), "container-title": "Écrits français", "publisher-place": "Paris", publisher: "Gallimard",
+      issued: y(1991), page: "177-220",
+    },
+    bib: "BENJAMIN Walter, « L’œuvre d’art à l’époque de sa reproduction mécanisée » [1936], in : *Écrits français*, Paris, Gallimard, 1991, p. 177–220.",
+  },
+  {
+    name: "Podcast / émission (animateur·ice)",
+    item: {
+      id: "podcast", type: "broadcast", host: [n("Dupont", "Anne")], title: "Épisode 3",
+      "container-title": "Podcast art", issued: d(2022, 3, 1),
+    },
+    bib: "DUPONT Anne, *Épisode 3*, extrait de l’émission *Podcast art*, 1er mars 2022.",
+  },
+  {
+    // Older Zotero fills event-place from Place, and citeproc then ignores an Extra "Event Place:".
+    // Workaround documented in the README: venue and dates typed into Genre, no Event Date.
+    name: "Ancien Zotero : lieu et dates d’exposition saisis dans Genre",
+    item: {
+      id: "iconoclash-oldz", type: "book", editor: [n("Latour", "Bruno")], title: "Iconoclash",
+      "publisher-place": "Cambridge (Mass.)", "event-place": "Cambridge (Mass.)",
+      note: "genre: cat. exp., Karlsruhe, ZKM, 4 mai–1er septembre 2002", publisher: "MIT Press", issued: y(2002),
+    },
+    bib: "LATOUR Bruno (éd.), *Iconoclash*, cat. exp., Karlsruhe, ZKM, 4 mai–1er septembre 2002, Cambridge (Mass.), MIT Press, 2002.",
   },
   // ---------- Zotero 7 (schema <= v39) exports Place as both publisher-place and event-place ----------
   {
@@ -723,6 +761,20 @@ export const notes: {
     ],
   },
   {
+    name: "Même auteur, travaux à paraître en des années différentes",
+    items: [
+      { id: "fc-2014", type: "chapter", author: [n("Imesch-Oechslin", "Kornelia")], title: "Ville", "container-title": "Utopia", status: "forthcoming", issued: y(2014) },
+      { id: "fc-2015", type: "chapter", author: [n("Imesch-Oechslin", "Kornelia")], title: "Autre", "container-title": "Revue", status: "forthcoming", issued: y(2015) },
+    ],
+    seq: [[{ id: "fc-2014" }], [{ id: "fc-2015" }], [{ id: "fc-2014", locator: "3" }], [{ id: "fc-2015", locator: "4" }]],
+    expected: [
+      "IMESCH-OECHSLIN Kornelia, « Ville », in : *Utopia*, à paraître en 2014.",
+      "IMESCH-OECHSLIN Kornelia, « Autre », in : *Revue*, à paraître en 2015.",
+      "IMESCH-OECHSLIN à paraître en 2014, p. 3.",
+      "IMESCH-OECHSLIN à paraître en 2015, p. 4.",
+    ],
+  },
+  {
     name: "Même nom, années différentes : pas de prénom",
     items: [
       { id: "dj-2000", type: "book", author: [n("Dupont", "Jean")], title: "Un", "publisher-place": "Paris", publisher: "PUF", issued: y(2000) },
@@ -790,8 +842,9 @@ export const bibliographies: { name: string; items: Item[]; expected: string[] }
     // Guards a citeproc-js quirk: one date macro reached from two branches leaked the "[ ]" of
     // the original date into other date ranges ("4 mai–[1er septembre ]2002").
     name: "Plages de dates mélangées (date originale, exposition, essai)",
-    items: [byId("viollet"), byId("iconoclash-full"), byId("essay-cat")],
+    items: [byId("viollet"), byId("iconoclash-full"), byId("essay-cat"), byId("benjamin")],
     expected: [
+      "BENJAMIN Walter, « L’œuvre d’art à l’époque de sa reproduction mécanisée » [1936], in : *Écrits français*, Paris, Gallimard, 1991, p. 177–220.",
       "DUPONT Anne, « Essai », in : LATOUR Bruno (éd.), *Iconoclash*, cat. exp., Karlsruhe, ZKM, 4 mai–1er septembre 2002, Cambridge (Mass.), MIT Press, 2002, p. 3–10.",
       "LATOUR Bruno et WEIBEL Peter (éd.), *Iconoclash. Beyond the Image Wars in Science, Religion and Art*, cat. exp., Karlsruhe, ZKM, 4 mai–1er septembre 2002, Cambridge (Mass.), The MIT Press, 2002.",
       "VIOLLET-LE-DUC Eugène-Emmanuel, *Entretiens sur l’architecture* [1863–1872], Gollion, Infolio, 2010.",
