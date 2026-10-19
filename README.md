@@ -145,6 +145,12 @@ dans un ouvrage collectif*, p. 15, says it is obligatory, but its examples also 
 `, à paraître en 2014` with a comma (*Ouvrages à paraître*, p. 15); in a note, the cited page
 replaces an article's page range (*Les références en bas de page*, p. 17).
 
+## License
+
+The styles and guides are under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/);
+the code (scripts, tests, Zotero helper) is under MIT. See [`LICENSE-CC-BY-SA.md`](LICENSE-CC-BY-SA.md)
+and [`LICENSE-MIT.md`](LICENSE-MIT.md).
+
 ## For developers
 
 ```sh
